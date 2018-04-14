@@ -81,8 +81,13 @@ public class CommandParser {
         //////////////////
         
         addCommand(ret, new Deposit());
+        addCommand(ret, new Craft());
+        addCommand(ret, new Items());
+        
         addCommand(ret, new Equip());
         addCommand(ret, new Give());
+        addCommand(ret, new Embark());
+        addCommand(ret, new Missions());
         
         return ret;
     }

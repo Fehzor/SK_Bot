@@ -78,10 +78,26 @@ public class Constants {
             case 9:
                 return "Undead";
         }
-        return "NOT A MATERIAL";
+        return "???";
     }
     
     public static String getMaterialName(int a, int b){
         return getMaterialName(mineralsToMaterial(a,b));
+    }
+    
+    public static String getMineralName(int min){
+        switch (min){
+            case 0:
+                return "Red";
+            case 1:
+                return "Green";
+            case 2: 
+                return "Blue";
+            case 3:
+                return "Yellow";
+            case 4:
+                return "Purple";
+        }
+        return "???";
     }
 }

@@ -87,12 +87,27 @@ public class Gate{
         for( Long L : activeUsers ){
             UserData UD = UserData.getUD(L);
             UD.crowns.append(50+oRan.nextInt(100));
-            UD.minerals.getData()[oRan.nextInt(5)]+=1;
+            UD.minerals.getData()[0]+=1;
+            UD.minerals.getData()[1]+=1;
+            UD.minerals.getData()[2]+=1;
+            UD.minerals.getData()[3]+=1;
+            UD.minerals.getData()[4]+=1;
+            UD.minerals.write();
             
             String A = UD.A.getData();
             
             Effects.act(this, UD, Weapons.effect.get(A), Weapons.param1.get(A),
                      Weapons.param2.get(A), Weapons.param3.get(A));
+            
+            String B = UD.B.getData();
+            
+            Effects.act(this, UD, Weapons.effect.get(B), Weapons.param1.get(B),
+                     Weapons.param2.get(B), Weapons.param3.get(B));
+            
+            String C = UD.C.getData();
+            
+            Effects.act(this, UD, Weapons.effect.get(C), Weapons.param1.get(C),
+                     Weapons.param2.get(C), Weapons.param3.get(C));
         }
     }
     

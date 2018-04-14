@@ -23,6 +23,7 @@ import Bot.Commands.CommandParser;
 import Bot.Fields.UserData;
 import static Bot.SuperRandom.oRan;
 import Game.Gate;
+import Game.Mission;
 import Game.Weapons;
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
@@ -126,7 +127,7 @@ public class Launcher implements IListener<MessageReceivedEvent>{
 		dispatcher.registerListener(this);
               
                 Weapons.loadAll();
-                
+                Mission.startMissions();
 	}
 
 	/**
@@ -160,8 +161,6 @@ public class Launcher implements IListener<MessageReceivedEvent>{
                 return;
             }
             
-            
-            
             if(eventList.size() == 0){
                 handleLock.unlock();
                 return;
@@ -173,33 +172,34 @@ public class Launcher implements IListener<MessageReceivedEvent>{
             currentChannel = channel;
             
             UserData UD = UserData.getUD(message.getAuthor());
-            
-            Gate G;
-            try{
-            G = Gate.gates.get(currentChannel);
-
-            if(!G.activeUsers.contains(Long.parseLong(UD.ID))){
-                G.activeUsers.add(Long.parseLong(UD.ID));
-            }
-            
-            if(System.currentTimeMillis() - UD.lastMessage.getData() < 20000){
-                G.tick();
-            }
-            
-            } catch (NullPointerException NPE){
-                Gate.instantiateGates(currentChannel.getGuild());
-            
+            if(!Mission.knights.getData().contains(message.getAuthor().getLongID())){
+                Gate G;
                 try{
-                    G = Gate.gates.get(currentChannel);
+                G = Gate.gates.get(currentChannel);
 
-                    if(!G.activeUsers.contains(Long.parseLong(UD.ID))){
-                        G.activeUsers.add(Long.parseLong(UD.ID));
-                    }
-                    
-                    if(System.currentTimeMillis() - UD.lastMessage.getData() < 20000){
-                        G.tick();
-                    }
-                } catch (NullPointerException NPE2){}
+                if(!G.activeUsers.contains(Long.parseLong(UD.ID))){
+                    G.activeUsers.add(Long.parseLong(UD.ID));
+                }
+
+                if(System.currentTimeMillis() - UD.lastMessage.getData() < 20000){
+                    G.tick();
+                }
+
+                } catch (NullPointerException NPE){
+                    Gate.instantiateGates(currentChannel.getGuild());
+
+                    try{
+                        G = Gate.gates.get(currentChannel);
+
+                        if(!G.activeUsers.contains(Long.parseLong(UD.ID))){
+                            G.activeUsers.add(Long.parseLong(UD.ID));
+                        }
+
+                        if(System.currentTimeMillis() - UD.lastMessage.getData() < 20000){
+                            G.tick();
+                        }
+                    } catch (NullPointerException NPE2){}
+                }
             }
             
             

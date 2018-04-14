@@ -5,6 +5,7 @@ import Bot.Launcher;
 import static Bot.SuperRandom.oRan;
 import Game.Constants;
 import static Game.Constants.getMaterialName;
+import Game.Mission;
 import com.vdurmont.emoji.Emoji;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -76,6 +77,9 @@ public class UserData {
     public Field<String> B;
     public Field<String> C;
     
+    public Field<ArrayList<String>> missions;
+    public Field<Integer> tier;
+    
     public UserData(IUser user){
         instantiateFields(user);
     }
@@ -84,21 +88,25 @@ public class UserData {
     public String toString(){
         try{
             String s = "**"+name+"**\n\n";
+            
+            if(Mission.knights.getData().contains(Long.parseLong(ID))){
+                s+="**CURRENTLY IN MISSION: "+Mission.whichMission.getData().get(Long.parseLong(ID)).toUpperCase()+"**\n\n";
+            }
 
             //s+="Lols: "+lols.getData()+"\n";
             //s+="Chat Blocks: "+blocks.getData()+"\n";
             //s+="Emoji: "+emoji.getData()+"\n";
 
-            s+="CROWNS: "+crowns.getData()+"\n";
-            s+="ENERGY: "+energy.getData()+"\n";
-            s+="SLIME COINS: "+slimeCoins.getData()+"\n\n";
+            s+="**CROWNS:** "+crowns.getData()+"\n";
+            s+="**ENERGY:** "+energy.getData()+"\n";
+            s+="**SLIME COINS:** "+slimeCoins.getData()+"\n\n";
 
-            s+="MINERALS: \n"+minerals.getData()[0]+" Red, "
+            s+="**MINERALS:** \n"+minerals.getData()[0]+" Red, "
                     + minerals.getData()[1]+" Green, "
                     + minerals.getData()[2]+" Blue, "
                     + minerals.getData()[3]+" Yellow, "
                     + minerals.getData()[4]+" Purple\n\n";
-            s+="MATERIALS: \n"+materials.getData()[0]+" "+getMaterialName(0)+", "
+            s+="**MATERIALS:** \n"+materials.getData()[0]+" "+getMaterialName(0)+", "
                     +materials.getData()[1]+" "+getMaterialName(1)+", "
                     +materials.getData()[2]+" "+getMaterialName(2)+", "
                     +materials.getData()[3]+" "+getMaterialName(3)+", "
@@ -109,11 +117,11 @@ public class UserData {
                     +materials.getData()[8]+" "+getMaterialName(8)+", "
                     +materials.getData()[9]+" "+getMaterialName(9)+"\n\n";
 
-            s+="WEAPONS: \n";
-            s+="A: "+A.getData()+"\n";
-            s+="B: "+B.getData()+"\n";
-            s+="C: "+C.getData()+"\n\n";
-            s+="ARSENAL: \n";
+            s+="**WEAPONS:** \n";
+            s+="**A:** "+A.getData()+"\n";
+            s+="**B:** "+B.getData()+"\n";
+            s+="**C:** "+C.getData()+"\n\n";
+            s+="**ARSENAL:** \n";
             for(String S : weapons.getData()){
                 s+=S+"\n";
             }
@@ -136,7 +144,7 @@ public class UserData {
         role = new Field<>(this.ID,"role",this.getRoleIfApplicable(ID).getLongID());
         
         crowns = new Field<>(this.ID,"crowns",0);
-        energy = new Field<>(this.ID,"ce",0);
+        energy = new Field<>(this.ID,"ce",100);
         slimeCoins = new Field<>(this.ID,"slimecoins",0);
         minerals = new Field<>(this.ID,"minerals",new int[]{0,0,0,0,0});
         materials = new Field<>(this.ID,"materials",new int[]{0,0,0,0,0,0,0,0,0,0,0});
@@ -145,6 +153,11 @@ public class UserData {
         A = new Field<>(this.ID,"A","Proto Sword");
         B = new Field<>(this.ID,"B","Proto Gun");
         C = new Field<>(this.ID,"C","Proto Bomb");
+        
+        missions = new Field<>(this.ID,"missions",new ArrayList<>());
+        missions.getData().add("Begging In Haven");
+        missions.write();
+        tier = new Field<>(this.ID,"tier",1);
         
         lastMessage = new Field<>(this.ID,"lastMessage",System.currentTimeMillis());
         
