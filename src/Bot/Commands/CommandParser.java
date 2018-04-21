@@ -88,6 +88,11 @@ public class CommandParser {
         addCommand(ret, new Give());
         addCommand(ret, new Embark());
         addCommand(ret, new Missions());
+        addCommand(ret, new QuietMode());
+        addCommand(ret, new Arsenal());
+        addCommand(ret, new getCostumes());
+        addCommand(ret, new Draw());
+        addCommand(ret, new Top10());
         
         return ret;
     }

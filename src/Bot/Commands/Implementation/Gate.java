@@ -25,6 +25,7 @@ public class Gate extends Command{
     }
     
     public void execute(String params, long ID){
+        try{
         IChannel get = Launcher.currentChannel;
         Game.Gate G = Game.Gate.gates.get(get);
         
@@ -35,5 +36,8 @@ public class Gate extends Command{
                 + G.minerals.getData()[4]+" Purple\n";
         
         Launcher.send(S);
+        }catch (Exception E){
+            E.printStackTrace();
+        }
     }
 }

@@ -31,6 +31,16 @@ public class Deposit extends Command{
         
         String [] splt = params.split(" ");
         
+        if(params.toLowerCase().equals("all")){
+            for(int index = 0; index < 5; ++index){
+                G.minerals.getData()[index] += UD.minerals.getData()[index];
+                UD.minerals.getData()[index] = 0;
+            }
+            UD.minerals.write();
+            G.minerals.write();
+            return;
+        }
+        
         try{
         for(int i = 0; i < splt.length; i+=2){
             int index = -1;

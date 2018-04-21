@@ -28,8 +28,8 @@ public class Take extends Command{
             String [] splt = params.split(" ",2);
             
             UserData UD = UserData.getUD(Long.parseLong(splt[0]));
-            UD.weapons.getData().remove(splt[1]);
-            UD.weapons.write();
+            UD.gear.getData().remove(splt[1]);
+            UD.gear.write();
         } else {
             Launcher.send("Nope.txt");
         }

@@ -36,7 +36,9 @@ public class Gate{
     
     public static void instantiateGates(IGuild G){
         for(IChannel chan : G.getChannels()){
-            new Gate(chan);
+            if(!gates.containsKey(chan)){
+                new Gate(chan);
+            }
         }
     }
     
@@ -44,11 +46,16 @@ public class Gate{
         int indexA = 1;
         int indexB = 0;
         int max = 0;
+        int otherMax = 0;
         for(int i=0; i <minerals.getData().length;++i){
-            if(minerals.getData()[i] > max){
+            if(minerals.getData()[i] >= max){
+                otherMax = max;
                 max = minerals.getData()[i];
                 indexB = indexA;
                 indexA = i;
+            } else if(minerals.getData()[i] >= otherMax){
+                otherMax = minerals.getData()[i];
+                indexB = i;
             }
         }
         
@@ -63,8 +70,8 @@ public class Gate{
     }
     
     public void deductMinerals(int a, int b){
-        minerals.getData()[a] = (int)Math.floor(minerals.getData()[a] * .93);
-        minerals.getData()[b] = (int)Math.floor(minerals.getData()[b] * .93);
+        minerals.getData()[a] = (int)Math.floor(minerals.getData()[a] * .97);
+        minerals.getData()[b] = (int)Math.floor(minerals.getData()[b] * .97);
         minerals.write();
     }
     
@@ -94,20 +101,36 @@ public class Gate{
             UD.minerals.getData()[4]+=1;
             UD.minerals.write();
             
-            String A = UD.A.getData();
             
-            Effects.act(this, UD, Weapons.effect.get(A), Weapons.param1.get(A),
-                     Weapons.param2.get(A), Weapons.param3.get(A));
+            String X = UD.A.getData();
             
-            String B = UD.B.getData();
+            Effects.act(this, UD, Gear.effect.get(X), Gear.param1.get(X),
+                     Gear.param2.get(X), Gear.param3.get(X));
             
-            Effects.act(this, UD, Weapons.effect.get(B), Weapons.param1.get(B),
-                     Weapons.param2.get(B), Weapons.param3.get(B));
+            X = UD.B.getData();
             
-            String C = UD.C.getData();
+            Effects.act(this, UD, Gear.effect.get(X), Gear.param1.get(X),
+                     Gear.param2.get(X), Gear.param3.get(X));
             
-            Effects.act(this, UD, Weapons.effect.get(C), Weapons.param1.get(C),
-                     Weapons.param2.get(C), Weapons.param3.get(C));
+            X = UD.C.getData();
+            
+            Effects.act(this, UD, Gear.effect.get(X), Gear.param1.get(X),
+                     Gear.param2.get(X), Gear.param3.get(X));
+            
+            X = UD.armor.getData();
+            
+            Effects.act(this, UD, Gear.effect.get(X), Gear.param1.get(X),
+                     Gear.param2.get(X), Gear.param3.get(X));
+            
+            X = UD.helmet.getData();
+            
+            Effects.act(this, UD, Gear.effect.get(X), Gear.param1.get(X),
+                     Gear.param2.get(X), Gear.param3.get(X));
+            
+            X = UD.shield.getData();
+            
+            Effects.act(this, UD, Gear.effect.get(X), Gear.param1.get(X),
+                     Gear.param2.get(X), Gear.param3.get(X));
         }
     }
     

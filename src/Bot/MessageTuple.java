@@ -44,6 +44,13 @@ public class MessageTuple {
         } catch (Exception E){return false;}
     }
     
+    public MessageTuple split(){
+        String text = this.message.substring(1990);
+        this.message = this.message.substring(0,1990);
+        MessageTuple ret = new MessageTuple(text,this.sendTo);
+        return ret;
+    }
+    
     public void send(){
         if(message != null){
             RequestBuffer.request(() -> sendTo.sendMessage(message));

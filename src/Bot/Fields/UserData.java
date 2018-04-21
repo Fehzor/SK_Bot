@@ -16,6 +16,9 @@ import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.Permissions;
 import sx.blah.discord.util.RoleBuilder;
+import static Game.Constants.getMaterialName;
+import static Game.Constants.getMaterialName;
+import static Game.Constants.getMaterialName;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -72,13 +75,20 @@ public class UserData {
     public Field<int[]> minerals;
     public Field<int[]> materials;
     
-    public Field<ArrayList<String>> weapons;
+    public Field<ArrayList<String>> gear;
+    public Field<ArrayList<String>> costumes;
+    
     public Field<String> A;
     public Field<String> B;
     public Field<String> C;
     
+    public Field<String> armor;
+    public Field<String> helmet;
+    public Field<String> shield;
+    
     public Field<ArrayList<String>> missions;
-    public Field<Integer> tier;
+    public Field<Integer> maxStars;
+    public Field<Integer> CP;
     
     public UserData(IUser user){
         instantiateFields(user);
@@ -117,20 +127,39 @@ public class UserData {
                     +materials.getData()[8]+" "+getMaterialName(8)+", "
                     +materials.getData()[9]+" "+getMaterialName(9)+"\n\n";
 
-            s+="**WEAPONS:** \n";
-            s+="**A:** "+A.getData()+"\n";
-            s+="**B:** "+B.getData()+"\n";
-            s+="**C:** "+C.getData()+"\n\n";
-            s+="**ARSENAL:** \n";
-            for(String S : weapons.getData()){
-                s+=S+"\n";
-            }
+            s+="**LOADOUT:** \n\n";
+            s+="**HELMET:** "+helmet.getData()+"\n";
+            s+="**ARMOR:** "+armor.getData()+"\n";
+            s+="**SHIELD:** "+shield.getData()+"\n\n";
+            s+="**WEAPON A:** "+A.getData()+"\n";
+            s+="**WEAPON B:** "+B.getData()+"\n";
+            s+="**WEAPON C:** "+C.getData()+"\n\n";
+            
+            
             return s;
         } catch (Exception E){
             E.printStackTrace();
         }
         return "Bad data!";
     }
+    
+    public String showArsenal(){
+        String s = "**ARSENAL:** \n";
+        for(String S : gear.getData()){
+            s+=S+"\n";
+        }
+        return s;
+    }
+    
+    public String showCostume(){
+        String s = "**COSTUMES:** ("+CP.getData()+" **C**ostume**P**oints)\n";
+        for(String S : costumes.getData()){
+            s+=S+"\n";
+        }
+        return s;
+    }
+    
+    
     
     private void instantiateFields(IUser user){
         
@@ -149,15 +178,22 @@ public class UserData {
         minerals = new Field<>(this.ID,"minerals",new int[]{0,0,0,0,0});
         materials = new Field<>(this.ID,"materials",new int[]{0,0,0,0,0,0,0,0,0,0,0});
         
-        weapons = new Field<>(this.ID,"weapons",new ArrayList<>());
+        gear = new Field<>(this.ID,"weapons",new ArrayList<>());
+        costumes = new Field<>(this.ID,"costumes",new ArrayList<>());
+        CP = new Field<>(this.ID,"CP",0);
+        
         A = new Field<>(this.ID,"A","Proto Sword");
         B = new Field<>(this.ID,"B","Proto Gun");
         C = new Field<>(this.ID,"C","Proto Bomb");
         
+        armor = new Field<>(this.ID,"armor","Spiral Culet");
+        helmet = new Field<>(this.ID,"helmet","Spiral Tailed Helm");
+        shield = new Field<>(this.ID,"shield","Proto Shield");
+        
         missions = new Field<>(this.ID,"missions",new ArrayList<>());
         missions.getData().add("Begging In Haven");
         missions.write();
-        tier = new Field<>(this.ID,"tier",1);
+        maxStars = new Field<>(this.ID,"tier",1);
         
         lastMessage = new Field<>(this.ID,"lastMessage",System.currentTimeMillis());
         

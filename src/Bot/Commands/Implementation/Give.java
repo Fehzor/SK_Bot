@@ -18,9 +18,9 @@ import static Bot.SuperRandom.oRan;
 public class Give extends Command{
     
     public Give(){
-        this.category = 1;
+        this.category = -1;
         this.signature = new String[]{"!give"};
-        this.description = "Checks your stats";
+        this.description = "Grant someone an item!";
     }
     
     public void execute(String params, long ID){
@@ -28,8 +28,8 @@ public class Give extends Command{
             String [] splt = params.split(" ",2);
             
             UserData UD = UserData.getUD(Long.parseLong(splt[0]));
-            UD.weapons.getData().add(splt[1]);
-            UD.weapons.write();
+            UD.gear.getData().add(splt[1]);
+            UD.gear.write();
         } else {
             Launcher.send("Nope.txt");
         }

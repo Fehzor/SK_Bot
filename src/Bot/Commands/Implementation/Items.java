@@ -10,7 +10,7 @@ import Bot.Commands.CommandParser;
 import Bot.Fields.UserData;
 import Bot.Launcher;
 import static Bot.SuperRandom.oRan;
-import Game.Weapons;
+import Game.Gear;
 import sx.blah.discord.handle.obj.IChannel;
 
 /**
@@ -31,20 +31,20 @@ public class Items extends Command{
         
         String s = "**Items you can craft:**\n\n";
         
-        for(String w : Weapons.names){
-            if(Weapons.prev.containsKey(w)){
-                if(UD.weapons.getData().contains(Weapons.prev.get(w))){
-                    s+="**"+Weapons.prev.get(w)+"** -> **"+w+"**\n";
-                    s+="*"+Weapons.description.get(w)+"*\n";
-                    s+="*"+Weapons.cost(w)+"*\n";
+        for(String w : Gear.publicGear){
+            if(Gear.prev.containsKey(w)){
+                if(UD.gear.getData().contains(Gear.prev.get(w))){
+                    s+="**"+Gear.prev.get(w)+"** -> **"+w+"**\n";
+                    s+="*"+Gear.description.get(w)+"*\n";
+                    s+="*"+Gear.cost(w)+"*\n";
                 }
             } else {
                 s+="**"+w+"**\n";
-                s+="*"+Weapons.description.get(w)+"*\n";
-                s+="*"+Weapons.cost(w)+"*\n";
+                s+="*"+Gear.description.get(w)+"*\n";
+                s+="*"+Gear.cost(w)+"*\n";
             }
         }
         
-        Launcher.send(s);
+        Launcher.PM(s,ID);
     }
 }

@@ -26,7 +26,7 @@ public class Commands extends Command{
         String message = "**Commands are as follows:**\n\n";
         
         String a = "**→View Commands**\n";
-        String b = "**→Commands**\n";
+        String b = "**→Active Commands**\n";
         String c = "**→Commands**\n";
         String d = "**→Other Commands**\n";
         
@@ -59,7 +59,7 @@ public class Commands extends Command{
         }
         
         message+=a+"\n";
-        ////message+=b+"\n";
+        message+=b+"\n";
         ////message+=c+"\n";
         message+=d+"\n";
         

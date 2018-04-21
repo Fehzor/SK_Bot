@@ -22,9 +22,10 @@ import Bot.ChatParser.messageHandler;
 import Bot.Commands.CommandParser;
 import Bot.Fields.UserData;
 import static Bot.SuperRandom.oRan;
+import Game.Costumes;
 import Game.Gate;
 import Game.Mission;
-import Game.Weapons;
+import Game.Gear;
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
 import java.awt.Color;
@@ -68,6 +69,7 @@ public class Launcher implements IListener<MessageReceivedEvent>{
         private static ArrayList<MessageTuple> toAdd = new ArrayList<>();
         
         public static IChannel currentChannel = null;
+        public static IUser currentPerson = null;
         
 	public static void main(String[] args) { // Main method
 		INSTANCE = login(args[0]); // Creates the bot instance and logs it in.
@@ -126,8 +128,9 @@ public class Launcher implements IListener<MessageReceivedEvent>{
                 EventDispatcher dispatcher = client.getDispatcher(); // Gets the client's event dispatcher
 		dispatcher.registerListener(this);
               
-                Weapons.loadAll();
+                Gear.loadAll();
                 Mission.startMissions();
+                Costumes.loadCostumes();
 	}
 
 	/**
@@ -170,37 +173,32 @@ public class Launcher implements IListener<MessageReceivedEvent>{
             IMessage message = event.getMessage(); // Gets the message from the event object NOTE: This is not the content of the message, but the object itself
             IChannel channel = message.getChannel(); // Gets the channel in which this message was sent.
             currentChannel = channel;
+            currentPerson = message.getAuthor();
             
             UserData UD = UserData.getUD(message.getAuthor());
-            if(!Mission.knights.getData().contains(message.getAuthor().getLongID())){
+
+            
+            if(!channel.isPrivate()){
+                if(!Gate.gates.containsKey(channel)){
+                    Gate.instantiateGates(currentChannel.getGuild());
+                }
+                
                 Gate G;
-                try{
                 G = Gate.gates.get(currentChannel);
 
                 if(!G.activeUsers.contains(Long.parseLong(UD.ID))){
                     G.activeUsers.add(Long.parseLong(UD.ID));
                 }
 
-                if(System.currentTimeMillis() - UD.lastMessage.getData() < 20000){
+                if(System.currentTimeMillis() - UD.lastMessage.getData() > 20000){
                     G.tick();
+                    UD.lastMessage.writeData(System.currentTimeMillis());
                 }
-
-                } catch (NullPointerException NPE){
-                    Gate.instantiateGates(currentChannel.getGuild());
-
-                    try{
-                        G = Gate.gates.get(currentChannel);
-
-                        if(!G.activeUsers.contains(Long.parseLong(UD.ID))){
-                            G.activeUsers.add(Long.parseLong(UD.ID));
-                        }
-
-                        if(System.currentTimeMillis() - UD.lastMessage.getData() < 20000){
-                            G.tick();
-                        }
-                    } catch (NullPointerException NPE2){}
-                }
+            } else {
+                //System.out.println("PRIVATE CHANNEL DETECTED");
             }
+
+                
             
             
             CommandParser.parseCommand(message.toString(), message.getAuthor().getLongID());
@@ -214,7 +212,7 @@ public class Launcher implements IListener<MessageReceivedEvent>{
                 messageHandler.receive(channel,message);
             }
             
-            UD.lastMessage.writeData(System.currentTimeMillis());
+            
             
             System.out.println("PROCESSED = "+message.getAuthor().getName()+": "+message.getContent());
             handleLock.unlock();
@@ -231,7 +229,11 @@ public class Launcher implements IListener<MessageReceivedEvent>{
        }
        
        public static void send(String message){
-           send(message,currentChannel);
+           if(currentChannel.isPrivate() || Settings.quiet.getData()){
+               PM(message,currentPerson.getLongID());
+           } else {
+                send(message,currentChannel);
+           }
        }
        
        private static boolean actuallySend(){
@@ -264,6 +266,9 @@ public class Launcher implements IListener<MessageReceivedEvent>{
                }
                
                MessageTuple mess = messages.remove(0);
+               if(mess.message != null && mess.message.length() > 1993){
+                   messages.add(0,mess.split());
+               }
               
                try {
                     mess.send();

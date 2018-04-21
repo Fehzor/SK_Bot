@@ -11,7 +11,7 @@ import Bot.Fields.UserData;
 import Bot.Launcher;
 import static Bot.SuperRandom.oRan;
 import Game.Mission;
-import Game.Weapons;
+import Game.Gear;
 import org.apache.commons.lang3.text.WordUtils;
 import sx.blah.discord.handle.obj.IChannel;
 
@@ -22,8 +22,8 @@ import sx.blah.discord.handle.obj.IChannel;
 public class Embark extends Command{
     
     public Embark(){
-        this.category = 1;
-        this.signature = new String[]{"!embark"};
+        this.category = 2;
+        this.signature = new String[]{"!embark","!embarking"};
         this.description = "Embark on a mission- E.G. !embark Begging In Haven";
     }
     

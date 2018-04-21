@@ -11,7 +11,7 @@ import Bot.Fields.UserData;
 import Bot.Launcher;
 import static Bot.SuperRandom.oRan;
 import Game.Mission;
-import Game.Weapons;
+import Game.Gear;
 import sx.blah.discord.handle.obj.IChannel;
 
 /**
@@ -23,7 +23,7 @@ public class Missions extends Command{
     public Missions(){
         this.category = 1;
         this.signature = new String[]{"!missions"};
-        this.description = "View all items you can currently craft.";
+        this.description = "View your unlocked missions!";
     }
     
     public void execute(String params, long ID){
@@ -39,8 +39,8 @@ public class Missions extends Command{
                 String len = "Short";
                 if(Mission.missions.get(m).time >= 1000 * 60 * 30) len = "Medium";
                 if(Mission.missions.get(m).time >= 1000 * 60 * 60) len = "Long";
-                if(Mission.missions.get(m).time >= 1000 * 60 * 60 * 4) len = "Short Shift";
-                if(Mission.missions.get(m).time >= 1000 * 60 * 60 * 8) len = "Long Shift";
+                if(Mission.missions.get(m).time >= 1000 * 60 * 60 * 4) len = "Lengthy Work Shift";
+                if(Mission.missions.get(m).time >= 1000 * 60 * 60 * 8) len = "Very Lengthy Work Shift";
                 if(Mission.missions.get(m).time >= 1000 * 60 * 60 * 24) len = "One Day+";
                 
                 s+="Length: "+len+"\n";
@@ -49,6 +49,6 @@ public class Missions extends Command{
             }
         }
         
-        Launcher.send(s);
+        Launcher.PM(s,ID);
     }
 }
