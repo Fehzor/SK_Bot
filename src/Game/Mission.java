@@ -10,7 +10,15 @@ import Bot.Fields.UserData;
 import Bot.Launcher;
 import static Bot.SuperRandom.oRan;
 import static Game.Constants.BEAST;
+import static Game.Constants.CONSTRUCT;
 import static Game.Constants.FIEND;
+import static Game.Constants.FIRE;
+import static Game.Constants.FREEZE;
+import static Game.Constants.GREMLIN;
+import static Game.Constants.POISON;
+import static Game.Constants.SHOCK;
+import static Game.Constants.SLIME;
+import static Game.Constants.UNDEAD;
 import static Game.Gear.ELEMENTAL;
 import static Game.Gear.NONE;
 import static Game.Gear.NORMAL;
@@ -37,13 +45,14 @@ public class Mission {
     public long time;
     public int e;
     public int tier;
+    boolean once = false;
     
     public String flavor;
     
     public int good;
     public int bad;
     
-    public Mission(String name, long time, int e, int tier, int good, int bad, String flavor){
+    public Mission(String name, long time, int e, int tier, int good, int bad, boolean one, String flavor){
         this.name = name;
         this.time = time;
         this.e = e;
@@ -53,6 +62,7 @@ public class Mission {
         
         this.good = good;
         this.bad = bad;
+        this.once = one;
     }
     
     public static void check(){
@@ -135,7 +145,10 @@ public class Mission {
             }
         }
         
-        
+        if(once){
+            UD.missions.getData().remove(this);
+            UD.missions.write();
+        }
     }
     
     public void bonus(UserData UD){
@@ -153,6 +166,7 @@ public class Mission {
                 1,
                 NONE,
                 NONE,
+                false,
                 "Stand in haven asking other knights for energy like the trash you are."
         ){
             public void bonus(UserData UD){
@@ -175,8 +189,34 @@ public class Mission {
                 1,
                 ELEMENTAL,
                 SHADOW,
+                false,
                 "The bathroom in Haven is a disgusting place and it's your job to clean it."
-        ));
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(1000) == 247){
+                    Launcher.PM("As you unclog the toilet, an old sarong floats up..... you're definitely depserate enough to wear it around Haven...",Long.parseLong(UD.ID));
+                    UD.artifacts.getData().add("Old Sarong");
+                }
+            }
+        });
+        
+        register(new Mission(
+            "Prostitution",
+            45*60*1000,
+            300,
+            1,
+            NONE,
+            NONE,
+            false,
+            "You've been propositioned by King Krogmo himself due to your nasty looking sarong?"
+        ){
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Old Sarong")){
+                    return true;
+                }
+                return false;
+            }
+        });
         
         register(new Mission(
                 "Carrying Boxes",
@@ -185,18 +225,74 @@ public class Mission {
                 1,
                 NORMAL,
                 PIERCING,
+                false,
                 "Carry boxes around the clockworks and in Haven with the other knights."
         ));
         
         register(new Mission(
+                "Taking Out Trash-- Moorcraft",
+                48 * 60 * 1000,
+                25,
+                3,
+                SHADOW,
+                ELEMENTAL,
+                false,
+                "Moorcraft is a scary place... with lots of garbage to be taken out. Dump it off the side in the clockworks."
+        ));
+        
+        register(new Mission(
+                "Cleaning the ooze-- Moorcraft",
+                24 * 60 * 1000,
+                15,
+                3,
+                ELEMENTAL,
+                SHADOW,
+                false,
+                "Puddles of ectoplam rise through the floor.... it's your job to clean these up."
+        ));
+        
+        register(new Mission(
+                "Night Shift Trainee",
+                6 * 60 * 60 * 1000,
+                200,
+                3,
+                ELEMENTAL,
+                SHADOW,
+                false,
+                "Help keep watch over Haven. All night long. Sleep during the day like a vampire."
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(1000)<100){
+                    Launcher.PM("At the end of the night Feron himself hands you an honorary trophy of sorts- a night baton",Long.parseLong(UD.ID));
+                    UD.artifacts.getData().add("Night Baton");
+                    UD.artifacts.write();
+                }
+            }
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Wolver Skull") && UD.artifacts.getData().contains("Red Stapler")){
+                    return true;
+                }
+                return false;
+            }
+        });
+        
+        register(new Mission(
                 "Night Shift",
                 6 * 60 * 60 * 1000,
-                1000,
+                600,
                 5,
                 ELEMENTAL,
                 SHADOW,
-                "Keep watch over Haven. All night long. Sleep during the day like a vampire."
-        ));
+                false,
+                "They were born in the darkness... you simply adopted it."
+        ){
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Night Baton")){
+                    return true;
+                }
+                return false;
+            }
+        });
         
         register(new Mission(
                 "Geotech Intern",
@@ -205,6 +301,7 @@ public class Mission {
                 1,
                 NONE,
                 NONE,
+                false,
                 "Work for free helping the geology department. How kind of you."
         ){
             public void bonus(UserData UD){
@@ -233,6 +330,7 @@ public class Mission {
                 3,
                 NONE,
                 NONE,
+                false,
                 "Study the minerals out in the field. Get paid. Get minerals."
         ){
             public void bonus(UserData UD){
@@ -260,10 +358,11 @@ public class Mission {
         register(new Mission(
                 "Den Defaunation",
                 30 * 60 * 1000,
-                30,
+                35,
                 1,
                 PIERCING,
                 ELEMENTAL,
+                true,
                 "Go deep into a Wolver Den and kill them all. Alphas, Wolvers, even the children."
         ){
             public void bonus(UserData UD){
@@ -278,9 +377,19 @@ public class Mission {
                 } else {
                     Launcher.PM("Your bleeding heart gets the better of you, and you pet the wolvers. The wolvers proceed to make that idiom literal... you barely survive, and are given the energy out of pitty..",Long.parseLong(UD.ID));
                 }
+                
+                if(oRan.nextInt(1000) < 50){
+                    UD.artifacts.getData().add("Wolver Skull");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- the skull of a slain wolver.", Long.parseLong(UD.ID));
+                }
             }
             
             public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Wolver Skull")){
+                    return false;
+                }
+                
                 if(Gear.damageType.get(UD.A.getData()) == Gear.PIERCING){
                     return true;
                 }
@@ -300,10 +409,11 @@ public class Mission {
         register(new Mission(
                 "Fiendish Friends",
                 30 * 60 * 1000,
-                30,
+                35,
                 1,
                 PIERCING,
                 SHADOW,
+                true,
                 "Explore the fiendish office space and slay anything you find in the name of the Spiral Order."
         ){
             public void bonus(UserData UD){
@@ -314,13 +424,23 @@ public class Mission {
                 } else if(oRan.nextInt(1000) < 300){
                     UD.materials.getData()[FIEND]+=3;
                     UD.materials.write();
-                    Launcher.PM("The fiendish foes hurl stapler after chair after mug at you.. you're able to slay most of them, but a few get away. +3 Fiend mats",Long.parseLong(UD.ID));
+                    Launcher.PM("The fiendish foes hurl stapler after chair after mug at you.. you're able to slay most of them, but a few get away. +3 fiend mats",Long.parseLong(UD.ID));
                 } else {
                     Launcher.PM("You run into the middle of the pack only to realize your grim mistake... you manage to make it out alive, but not without consequence.",Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 50){
+                    UD.artifacts.getData().add("Red Stapler");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- A certain fiendish stapler.", Long.parseLong(UD.ID));
                 }
             }
             
             public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Red Stapler")){
+                    return false;
+                }
+                
                 if(Gear.damageType.get(UD.A.getData()) == Gear.PIERCING){
                     return true;
                 }
@@ -334,6 +454,360 @@ public class Mission {
                 }
                 
                 return false;
+            }
+        });
+        
+        register(new Mission(
+                "Garish Gremlins",
+                30 * 60 * 1000,
+                35,
+                1,
+                SHADOW,
+                ELEMENTAL,
+                true,
+                "We've recently made contact with some gremlins. Rather than negotiate, we've deced best to assassinate. Targeted Sanctions."
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(1000) < 100){
+                    UD.materials.getData()[GREMLIN]+=10;
+                    UD.materials.write();
+                    Launcher.PM("The gremlins plead. Then fight. Then die. +10 gremlin mats.",Long.parseLong(UD.ID));
+                } else if(oRan.nextInt(1000) < 300){
+                    UD.materials.getData()[GREMLIN]+=3;
+                    UD.materials.write();
+                    Launcher.PM("The gremlins notice your weapons and are ready to fight as you arrive.. only one escapes. +3 gremlin mats",Long.parseLong(UD.ID));
+                } else {
+                    Launcher.PM("These gremlins came prepared! You quickly pull out your weapons but it's too late- you barely survive to kill a third of your attackers before they vanish into the clockworks.",Long.parseLong(UD.ID));
+                }
+            }
+            
+            public boolean eligible(UserData UD){
+                if(Gear.damageType.get(UD.A.getData()) == Gear.SHADOW){
+                    return true;
+                }
+                
+                if(Gear.damageType.get(UD.B.getData()) == Gear.SHADOW){
+                    return true;
+                }
+                
+                if(Gear.damageType.get(UD.C.getData()) == Gear.SHADOW){
+                    return true;
+                }
+                
+                return false;
+            }
+        });
+        
+        register(new Mission(
+                "Guarded Gravestones",
+                30 * 60 * 1000,
+                35,
+                1,
+                ELEMENTAL,
+                SHADOW,
+                true,
+                "The undead know of nothing but death, and we shall swiftly deliver them to their graves.. after summoning them from their graves!"
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(1000) < 100){
+                    UD.materials.getData()[UNDEAD]+=10;
+                    UD.materials.write();
+                    Launcher.PM("You stab your sword into the ground as the dust zombie rises from beneath... the last of them, defeated. +10 undead mats",Long.parseLong(UD.ID));
+                } else if(oRan.nextInt(1000) < 300){
+                    UD.materials.getData()[UNDEAD]+=3;
+                    UD.materials.write();
+                    Launcher.PM("Just as you begin to leave a phantom draws its blade on you... you manage to escape, but take heavy damage. +3 undead mats",Long.parseLong(UD.ID));
+                } else {
+                    Launcher.PM("The zombies surround you and you fade to black... suddenly a team mate lifts you up, granting you with half their life force. You are saved.",Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 50){
+                    UD.artifacts.getData().add("Thwack Hammer");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- a thwack hammer", Long.parseLong(UD.ID));
+                }
+            }
+            
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Thwack Hammer")){
+                    return false;
+                }
+                
+                if(Gear.damageType.get(UD.A.getData()) == Gear.ELEMENTAL){
+                    return true;
+                }
+                
+                if(Gear.damageType.get(UD.B.getData()) == Gear.ELEMENTAL){
+                    return true;
+                }
+                
+                if(Gear.damageType.get(UD.C.getData()) == Gear.ELEMENTAL){
+                    return true;
+                }
+                
+                return false;
+            }
+        });
+        
+        register(new Mission(
+                "Autonomous Automations",
+                30 * 60 * 1000,
+                35,
+                1,
+                ELEMENTAL,
+                PIERCING,
+                true,
+                "A factory that produces factory members works through the night without sleep. Intelligent or not, sleep is all that awaits it."
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(1000) < 100){
+                    UD.materials.getData()[CONSTRUCT]+=10;
+                    UD.materials.write();
+                    Launcher.PM("The last of the machines stops. The last whir dies down. A hive mind has died today. +10 construct mats",Long.parseLong(UD.ID));
+                } else if(oRan.nextInt(1000) < 300){
+                    UD.materials.getData()[CONSTRUCT]+=3;
+                    UD.materials.write();
+                    Launcher.PM("The last machine's beauty captures you. You could kill it. Or you could leave it.... +3 construct mats",Long.parseLong(UD.ID));
+                } else {
+                    Launcher.PM("The machines seem to be talking toghether.. their conversation overwhelms you..... just as the blade of a mecha knight pierces your chest.",Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 50){
+                    UD.artifacts.getData().add("Clockwork Crest");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- a certain heart shaped crest.", Long.parseLong(UD.ID));
+                }
+            }
+            
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Clockwork Crest")){
+                    return false;
+                }
+                
+                if(Gear.damageType.get(UD.A.getData()) == Gear.ELEMENTAL){
+                    return true;
+                }
+                
+                if(Gear.damageType.get(UD.B.getData()) == Gear.ELEMENTAL){
+                    return true;
+                }
+                
+                if(Gear.damageType.get(UD.C.getData()) == Gear.ELEMENTAL){
+                    return true;
+                }
+                
+                return false;
+            }
+        });
+        
+        register(new Mission(
+                "Slimy Showdown",
+                30 * 60 * 1000,
+                35,
+                1,
+                SHADOW,
+                PIERCING,
+                true,
+                "They ooze up from the ground and drip from the ceiling to consume. We must stop them before they stop us."
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(1000) < 100){
+                    UD.materials.getData()[SLIME]+=10;
+                    UD.materials.write();
+                    Launcher.PM("The ground smells dead. Arid. Unfit for life. +10 slime mats!",Long.parseLong(UD.ID));
+                } else if(oRan.nextInt(1000) < 300){
+                    UD.materials.getData()[SLIME]+=3;
+                    UD.materials.write();
+                    Launcher.PM("Most of the slimes were slain but some remain in hiding... if only there were more time... +3 slime mats",Long.parseLong(UD.ID));
+                } else {
+                    Launcher.PM("As you approach the slimes begin to combine into a monstrous figure... the hair on the back of your neck stands up as a tremendous spike shoots out of the ground near you..",Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 50){
+                    UD.artifacts.getData().add("Digested Idol");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- a fiendish idol, partly digested by a slime.", Long.parseLong(UD.ID));
+                }
+            }
+            
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Digested Idol")){
+                    return false;
+                }
+                
+                if(Gear.damageType.get(UD.A.getData()) == Gear.SHADOW){
+                    return true;
+                }
+                
+                if(Gear.damageType.get(UD.B.getData()) == Gear.SHADOW){
+                    return true;
+                }
+                
+                if(Gear.damageType.get(UD.C.getData()) == Gear.SHADOW){
+                    return true;
+                }
+                
+                return false;
+            }
+        });
+        
+        register(new Mission(
+                "Fiery Flamewar",
+                30 * 60 * 1000,
+                35,
+                2,
+                SHADOW,
+                PIERCING,
+                true,
+                "It's april fools and the gremlin scorchers are yelling insults at us with oilers at their sides!"
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(1000) < 100){
+                    UD.materials.getData()[FIRE]+=10;
+                    UD.materials.write();
+                    Launcher.PM("Sticks and stones may break your bones but fire failed to do so. +10 fire mats!",Long.parseLong(UD.ID));
+                } else if(oRan.nextInt(1000) < 300){
+                    UD.materials.getData()[FIRE]+=3;
+                    UD.materials.write();
+                    Launcher.PM("The gremlin's flamethrowers brushed by your leg, leaving third degree burns. A fair trade for their life. !3 fire mats.",Long.parseLong(UD.ID));
+                } else {
+                    Launcher.PM("The flamer's gay harassment got through to you! You tripped directly into the line of fire.. good thing a friend was there to pull you out!",Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 50){
+                    UD.artifacts.getData().add("Trash Talk");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- the manifestation of the gremlins talking.", Long.parseLong(UD.ID));
+                }
+            }
+            
+            
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Trash Talk")){
+                    return false;
+                }
+                
+                return true;
+            }
+        });
+        
+        register(new Mission(
+                "Generic Shock Mission",
+                30 * 60 * 1000,
+                35,
+                2,
+                SHADOW,
+                PIERCING,
+                true,
+                "!"
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(1000) < 100){
+                    UD.materials.getData()[SHOCK]+=10;
+                    UD.materials.write();
+                    Launcher.PM("The generic shock monsters were no match for your shadowy weapons! +10 shock mats!",Long.parseLong(UD.ID));
+                } else if(oRan.nextInt(1000) < 300){
+                    UD.materials.getData()[FIRE]+=3;
+                    UD.materials.write();
+                    Launcher.PM("Suddenly a generic shock enemy appears to fight! You slash at it but it's too fast! +3 shock mats!",Long.parseLong(UD.ID));
+                } else {
+                    Launcher.PM("Shock crumbles your stance long enough for a shock themed enemy to get in a hit! And another! you barely escape with your life.",Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 50){
+                    UD.artifacts.getData().add("Generic Shock Artifact");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- some kind of generic electric thing.", Long.parseLong(UD.ID));
+                }
+            }
+            
+            
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Generic Shock Artifact")){
+                    return false;
+                }
+                
+                return true;
+            }
+        });
+        
+        register(new Mission(
+                "Poisonous Peril",
+                30 * 60 * 1000,
+                35,
+                2,
+                PIERCING,
+                ELEMENTAL,
+                true,
+                "The wolvers! They're rabid! How? The Spiral Order won't say!"
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(1000) < 100){
+                    UD.materials.getData()[POISON]+=10;
+                    UD.materials.write();
+                    Launcher.PM("The wolvers move around you in an aggressive, rabid, haze. You move around them in a sober state of mind. +10 poison mats!",Long.parseLong(UD.ID));
+                } else if(oRan.nextInt(1000) < 300){
+                    UD.materials.getData()[POISON]+=3;
+                    UD.materials.write();
+                    Launcher.PM("One bite was all it took to send you to the med bay... severa dozen slashes were all it took to slay the pack. +3 poison mats!",Long.parseLong(UD.ID));
+                } else {
+                    Launcher.PM("Even through their rabid haze the wolvers are fine beasts. They had you beat, though your party took care of them for you...",Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 50){
+                    UD.artifacts.getData().add("Rabies");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- ....rabies?", Long.parseLong(UD.ID));
+                }
+            }
+            
+            
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Rabies")){
+                    return false;
+                }
+                
+                return true;
+            }
+        });
+        
+        register(new Mission(
+                "Frozen to the bone",
+                30 * 60 * 1000,
+                35,
+                2,
+                ELEMENTAL,
+                SHADOW,
+                true,
+                "!"
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(1000) < 100){
+                    UD.materials.getData()[FREEZE]+=10;
+                    UD.materials.write();
+                    Launcher.PM("The frozen shamblers are no match for you! +10 freeze mats.",Long.parseLong(UD.ID));
+                } else if(oRan.nextInt(1000) < 300){
+                    UD.materials.getData()[FREEZE]+=3;
+                    UD.materials.write();
+                    Launcher.PM("Freeze vents are no fun, but your friends are able to unstick you well enough. +3 freeze mats!",Long.parseLong(UD.ID));
+                } else {
+                    Launcher.PM("You quickly find yourself frozen in front of some sort of mechanical tree. FFFFF",Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 50){
+                    UD.artifacts.getData().add("Frozen Bone");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- a literal frozen bone?", Long.parseLong(UD.ID));
+                }
+            }
+            
+            
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Frozen Bone")){
+                    return false;
+                }
+                
+                return true;
             }
         });
         
@@ -407,6 +881,7 @@ public class Mission {
     }
     
     public void checkRank(UserData UD){
+        try{
         int above = UD.maxStars.getData();
         
         int a = Gear.star.get(UD.A.getData());
@@ -420,5 +895,6 @@ public class Mission {
             UD.maxStars.append(1);
             Launcher.PM("Congratulations! You've advanced to rank "+(above+1)+"!",Long.parseLong(UD.ID));
         }
+        }catch (Exception E){}
     }
 }

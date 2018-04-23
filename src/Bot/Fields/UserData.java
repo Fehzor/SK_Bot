@@ -77,6 +77,7 @@ public class UserData {
     
     public Field<ArrayList<String>> gear;
     public Field<ArrayList<String>> costumes;
+    public Field<ArrayList<String>> artifacts;
     
     public Field<String> A;
     public Field<String> B;
@@ -151,6 +152,14 @@ public class UserData {
         return s;
     }
     
+    public String showArtifacts(){
+        String s = "**ARTIFACTS:** \n";
+        for(String S : artifacts.getData()){
+            s+=S+"\n";
+        }
+        return s;
+    }
+    
     public String showCostume(){
         String s = "**COSTUMES:** ("+CP.getData()+" **C**ostume**P**oints)\n";
         for(String S : costumes.getData()){
@@ -179,6 +188,7 @@ public class UserData {
         materials = new Field<>(this.ID,"materials",new int[]{0,0,0,0,0,0,0,0,0,0,0});
         
         gear = new Field<>(this.ID,"weapons",new ArrayList<>());
+        artifacts = new Field<>(this.ID,"artifacts",new ArrayList<>());
         costumes = new Field<>(this.ID,"costumes",new ArrayList<>());
         CP = new Field<>(this.ID,"CP",0);
         

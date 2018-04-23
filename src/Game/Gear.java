@@ -714,6 +714,169 @@ public class Gear {
         
         line(3,a,b,c,d,e,f,GREMLIN,UNDEAD,WEAPON);
         
+        
+        /////////////ARMOR/////////////////
+        
+        a = new String[]{
+            "Magic Cloak",
+            "Elemental Cloak",
+            "Miracle Cloak",
+            "Grey Feather Mantle"
+        };
+        
+        b = new int[]{
+            6,6,6,6
+        };
+        
+        c = new int[]{
+            1,2,2,2
+        };
+        
+        d = new int[]{
+            100,200,250,300
+        };
+        
+        e = empty;
+        
+        f = new int[]{
+            0,0,0,0
+        };
+        
+        line(2,a,b,c,d,e,f,UNDEAD,BEAST,ARMOR);
+        
+        a = new String[]{
+            "Magic Hood",
+            "Elemental Hood",
+            "Miracle Hood",
+            "Grey Feather Cowl"
+        };
+        
+        b = new int[]{
+            6,6,6,6
+        };
+        
+        c = new int[]{
+            1,2,2,2
+        };
+        
+        d = new int[]{
+            100,200,250,300
+        };
+        
+        e = empty;
+        
+        f = new int[]{
+            0,0,0,0
+        };
+        
+        line(2,a,b,c,d,e,f,UNDEAD,BEAST,HELM);
+        
+        a = new String[]{
+            "Owlite Shield",
+            "Horned Owlite Shield",
+            "Wise Owlite Shield",
+            "Grey Owlite Shield"
+        };
+        
+        b = new int[]{
+            6,6,6,6
+        };
+        
+        c = new int[]{
+            1,2,2,2
+        };
+        
+        d = new int[]{
+            100,200,250,300
+        };
+        
+        e = empty;
+        
+        f = new int[]{
+            0,0,0,0
+        };
+        
+        line(2,a,b,c,d,e,f,UNDEAD,BEAST,SHIELD);
+        
+        a = new String[]{
+            "Spiral Plate Helm",
+            "Boosted Plate Helm",
+            "Heavy Plate Helm",
+            "Ironmight plate helm"
+        };
+        
+        b = new int[]{
+            6,6,6,6
+        };
+        
+        c = new int[]{
+            2,4,4,4
+        };
+        
+        d = new int[]{
+            200,400,500,600
+        };
+        
+        e = empty;
+        
+        f = new int[]{
+            0,0,0,0
+        };
+        
+        line(2,a,b,c,d,e,f,FIRE,SLIME,HELM);
+        
+        a = new String[]{
+            "Spiral Plate Mail",
+            "Boosted Plate Mail",
+            "Heavy Plate Mail",
+            "Ironmight Plate Mail"
+        };
+        
+        b = new int[]{
+            6,6,6,6
+        };
+        
+        c = new int[]{
+            2,4,4,4
+        };
+        
+        d = new int[]{
+            200,400,500,600
+        };
+        
+        e = empty;
+        
+        f = new int[]{
+            0,0,0,0
+        };
+        
+        line(2,a,b,c,d,e,f,FIRE,SLIME,ARMOR);
+        
+        a = new String[]{
+            "Plate Shield",
+            "Boosted Plate Shield",
+            "Heavy Plate Shield",
+            "Ironmight Plate Shield"
+        };
+        
+        b = new int[]{
+            0,0,0,0
+        };
+        
+        c = new int[]{
+            50,100,150,200
+        };
+        
+        d = empty;
+        
+        e = empty;
+        
+        f = new int[]{
+            0,0,0,0
+        };
+        
+        line(2,a,b,c,d,e,f,FIRE,BEAST,SHIELD);
+        
     }
     
     private static void line(int starbase, String [] main, int [] effects, 
@@ -757,6 +920,7 @@ public class Gear {
         param3.put(name, p3);
         damageType.put(name, dam);
         type.put(name,t);
+        star.put(name, 1);
     }
     
     public static String cost(String wep){

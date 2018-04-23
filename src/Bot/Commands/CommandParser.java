@@ -83,7 +83,6 @@ public class CommandParser {
         addCommand(ret, new Deposit());
         addCommand(ret, new Craft());
         addCommand(ret, new Items());
-        
         addCommand(ret, new Equip());
         addCommand(ret, new Give());
         addCommand(ret, new Embark());
@@ -93,6 +92,7 @@ public class CommandParser {
         addCommand(ret, new getCostumes());
         addCommand(ret, new Draw());
         addCommand(ret, new Top10());
+        addCommand(ret, new Artifacts());
         
         return ret;
     }
