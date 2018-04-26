@@ -41,6 +41,16 @@ public class CommandParser {
             args = split[1];
         } catch (Exception E){}
         
+        try{
+            if(S.charAt(0)=='.'){
+                split = S.split(" ",3);
+                try{
+                    signature = "!"+split[1].toLowerCase();
+                    args = split[2];
+                } catch (Exception E){}
+            }
+        } catch (Exception E){}
+        
         if(commandList.containsKey(signature)){
             Command C = commandList.get(signature);
             try{
@@ -93,6 +103,7 @@ public class CommandParser {
         addCommand(ret, new Draw());
         addCommand(ret, new Top10());
         addCommand(ret, new Artifacts());
+        addCommand(ret, new Inspect());
         
         return ret;
     }

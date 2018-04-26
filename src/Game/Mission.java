@@ -170,7 +170,13 @@ public class Mission {
                 "Stand in haven asking other knights for energy like the trash you are."
         ){
             public void bonus(UserData UD){
-                if(oRan.nextInt(1000) == 23){
+                if(!(UD.costumes.getData().contains("GroundBreaker Set"))){
+                    UD.costumes.getData().add("GroundBreaker Set");
+                    UD.costumes.write();
+                    UD.CP.append(7);
+                    Launcher.PM("The Spiral Order noticed how early you were to the party and handed you a GroundBreaker Set!",Long.parseLong(UD.ID));
+                } else {
+                    if(oRan.nextInt(1000) == 23){
                     UD.energy.append(10000);
                     Launcher.PM("...someone hands you 10,000 ce and walks away.",Long.parseLong(UD.ID));
                 } else if(oRan.nextInt(1000) < 100){
@@ -178,6 +184,7 @@ public class Mission {
                     Launcher.PM("...A few people bite... +100 e",Long.parseLong(UD.ID));
                 } else {
                     Launcher.PM("...no one gave you anything :(",Long.parseLong(UD.ID));
+                }
                 }
             }
         });

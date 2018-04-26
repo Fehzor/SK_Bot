@@ -30,6 +30,7 @@ public class Equip extends Command{
     }
     
     public void execute(String params, long ID){
+        try{
         UserData UD = UserData.getUD(ID);
         if(Gear.type.get(WordUtils.capitalizeFully(params.toLowerCase())) == ARMOR){
             if(!UD.gear.getData().contains(WordUtils.capitalizeFully(params.toLowerCase()))){
@@ -37,6 +38,7 @@ public class Equip extends Command{
                 return;
             } else {
                 UD.armor.writeData(WordUtils.capitalizeFully(params.toLowerCase()));
+                return;
             }
         } else if(Gear.type.get(WordUtils.capitalizeFully(params.toLowerCase())) == HELM){
             if(!UD.gear.getData().contains(WordUtils.capitalizeFully(params.toLowerCase()))){
@@ -44,6 +46,7 @@ public class Equip extends Command{
                 return;
             } else {
                 UD.helmet.writeData(WordUtils.capitalizeFully(params.toLowerCase()));
+                return;
             }
         } else if(Gear.type.get(WordUtils.capitalizeFully(params.toLowerCase())) == SHIELD){
             if(!UD.gear.getData().contains(WordUtils.capitalizeFully(params.toLowerCase()))){
@@ -51,6 +54,7 @@ public class Equip extends Command{
                 return;
             } else {
                 UD.shield.writeData(WordUtils.capitalizeFully(params.toLowerCase()));
+                return;
             }
         } 
         
@@ -106,6 +110,8 @@ public class Equip extends Command{
             UD.C.writeData(wep);
             Launcher.send(wep+" has been equipped to slot C");
         }
-        
+        } catch (Exception E){
+            E.printStackTrace();
+        }
     }
 }
