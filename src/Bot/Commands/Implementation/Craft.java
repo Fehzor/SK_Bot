@@ -27,9 +27,9 @@ public class Craft extends Command{
     }
     
     public void execute(String params, long ID){
-        String [] splt = params.split(" ",2);
+        //String [] splt = params.split(" ",2);
         
-        String gear = WordUtils.capitalizeFully(splt[1].toLowerCase());
+        String gear = WordUtils.capitalizeFully(params.toLowerCase());
         UserData UD = UserData.getUD(ID);
         
         int star = Gear.star.get(gear);
@@ -43,7 +43,12 @@ public class Craft extends Command{
         if(star == 4)craftingCost = 400;
         if(star == 5)craftingCost = 800;
         
-        if(mats[matA] > craftingCost && mats[matB] > craftingCost && 
+        int matCost = 20;
+        if(star == 3)matCost = 70;
+        if(star == 4)matCost = 250;
+        if(star == 5)matCost = 800;
+        
+        if(mats[matA] > matCost && mats[matB] > matCost && 
                                         UD.energy.getData() > craftingCost){
             if(Gear.prev.containsKey(gear)){
                 if(UD.gear.getData().contains(Gear.prev.get(gear))){
@@ -56,8 +61,9 @@ public class Craft extends Command{
             } 
 
             UD.gear.getData().add(gear);
-            mats[matA] -= craftingCost;
-            mats[matB] -= craftingCost;
+            UD.gear.write();
+            mats[matA] -= matCost;
+            mats[matB] -= matCost;
             UD.materials.writeData(mats);
             UD.energy.append(-craftingCost);
 

@@ -55,6 +55,21 @@ public class UserData {
         return getUD(Launcher.client.getUserByID(ID));
     }
     
+    public static UserData getUD(String ID){
+        return getUD(Launcher.client.getUserByID(Long.parseLong(ID)));
+    }
+    
+    public static UserData getUD(IRole R){
+        String nam = R.getName();
+        for(String ID : IDList.getData()){
+            UserData UD = getUD(ID);
+            if((UD.role.getData()+"").equals(nam)){
+                return UD;
+            }
+        }
+        return null;
+    }
+    
     
     public String name = "Nameless Hero Of Legend";
     public String ID = "00002";

@@ -930,8 +930,14 @@ public class Gear {
         if(num == 4)num = 400;
         if(num == 5)num = 800;
         
-        String ret = "Cost: "+num+" "+Constants.getMaterialName(mat1.get(wep));
-        ret+= ", "+num+" "+Constants.getMaterialName(mat2.get(wep));
+        int matNum = star.get(wep);
+        if(matNum == 2)matNum = 20;
+        if(matNum == 3)matNum = 70;
+        if(matNum == 4)matNum = 250;
+        if(matNum == 5)matNum = 800;
+        
+        String ret = "Cost: "+matNum+" "+Constants.getMaterialName(mat1.get(wep));
+        ret+= ", "+matNum+" "+Constants.getMaterialName(mat2.get(wep));
         ret+= " and "+num+" energy.";
         
         return ret;

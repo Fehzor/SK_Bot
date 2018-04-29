@@ -161,7 +161,7 @@ public class Mission {
         
         register(new Mission(
                 "Begging In Haven",
-                20 * 60 * 1000,
+                60 * 60 * 1000,
                 0,
                 1,
                 NONE,
@@ -191,7 +191,7 @@ public class Mission {
         
         register(new Mission(
                 "Scrubbing Toilets In Haven",
-                60 * 60 * 1000,
+                180 * 60 * 1000,
                 25,
                 1,
                 ELEMENTAL,
@@ -200,7 +200,7 @@ public class Mission {
                 "The bathroom in Haven is a disgusting place and it's your job to clean it."
         ){
             public void bonus(UserData UD){
-                if(oRan.nextInt(1000) == 247){
+                if(oRan.nextInt(100) == 52){
                     Launcher.PM("As you unclog the toilet, an old sarong floats up..... you're definitely depserate enough to wear it around Haven...",Long.parseLong(UD.ID));
                     UD.artifacts.getData().add("Old Sarong");
                 }
@@ -209,7 +209,7 @@ public class Mission {
         
         register(new Mission(
             "Prostitution",
-            45*60*1000,
+            135*60*1000,
             300,
             1,
             NONE,
@@ -226,8 +226,140 @@ public class Mission {
         });
         
         register(new Mission(
+                "Supply Delivery- Haven Guards",
+                200 * 60 * 1000,
+                30,
+                1,
+                NORMAL,
+                SHADOW,
+                false,
+                "Letters, food and.. other.. supplies must be delivered to the guards guarding Haven!"
+        ){
+            public void bonus(UserData UD){
+                if(oRan.nextInt(500) == 52){
+                    Launcher.PM("A letter falls out and you can't help but read it... it seems the Spiral Order isn't as honest as they seem..",Long.parseLong(UD.ID));
+                    UD.artifacts.getData().add("Deceitful Letter");
+                }
+                if(oRan.nextInt(100) < 20){
+                    Launcher.PM("The Haven Guardian seems to like you.... he gives you his blessings",Long.parseLong(UD.ID));
+                    UD.artifacts.getData().add("Haven Guardian's Blessings");
+                }
+            }
+        });
+        
+        register(new Mission(
+                "Supply Delivery- Moorcraft",
+                4 * 60 * 60 * 1000,
+                100,
+                3,
+                NORMAL,
+                SHADOW,
+                false,
+                "Deliver rations and letters to Moorcraft!"
+        ){
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Haven Guardian's Blessings")){
+                    return true;
+                }
+                return false;
+            }
+            
+            public void bonus(UserData UD){
+                if(oRan.nextInt(300) == 52){
+                    Launcher.PM("A letter falls out and you can't help but read it... it seems the Spiral Order isn't as honest as they seem..",Long.parseLong(UD.ID));
+                    UD.artifacts.getData().add("Deceitful Letter");
+                }
+                if(oRan.nextInt(100) < 10){
+                    Launcher.PM("The Moorcraft crew seems to like you.... they give you their blessings",Long.parseLong(UD.ID));
+                    UD.artifacts.getData().add("Moorcraft Crew's Blessings");
+                }
+            }
+        });
+        
+        register(new Mission(
+                "Supply Delivery- Emberlight",
+                6 * 60 * 60 * 1000,
+                200,
+                4,
+                NORMAL,
+                SHADOW,
+                false,
+                "Deliver rations and letters to Emberlight!"
+        ){
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Moorcraft Crew's Blessings")){
+                    return true;
+                }
+                return false;
+            }
+            
+            public void bonus(UserData UD){
+                if(oRan.nextInt(200) == 52){
+                    Launcher.PM("A letter falls out and you can't help but read it... it seems the Spiral Order isn't as honest as they seem..",Long.parseLong(UD.ID));
+                    UD.artifacts.getData().add("Deceitful Letter");
+                }
+                if(oRan.nextInt(100) < 5){
+                    Launcher.PM("The crew at Emberlight seems to like you.... they give you their blessings",Long.parseLong(UD.ID));
+                    UD.artifacts.getData().add("Emberlight's Blessings");
+                }
+            }
+        });
+        
+        register(new Mission(
+                "Supply Delivery- Core",
+                8 * 60 * 60 * 1000,
+                300,
+                3,
+                NORMAL,
+                SHADOW,
+                false,
+                "Deliver rations and letters to the core!"
+        ){
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Emberlight's Blessings")){
+                    return true;
+                }
+                return false;
+            }
+            
+            public void bonus(UserData UD){
+                if(oRan.nextInt(50) == 23){
+                    Launcher.PM("A letter falls out and you can't help but read it... it seems the Spiral Order isn't as honest as they seem..",Long.parseLong(UD.ID));
+                    UD.artifacts.getData().add("Deceitful Letter");
+                }
+            }
+        });
+        
+        register(new Mission(
+                "Supply Delivery- Sanctuary",
+                13 * 60 * 60 * 1000,
+                1000,
+                5,
+                NORMAL,
+                SHADOW,
+                false,
+                "Deliver rations and letters to the Sanctuary!"
+        ){
+            public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Deceitful Letter")){
+                    return true;
+                }
+                return false;
+            }
+            
+            public void bonus(UserData UD){
+                if(oRan.nextInt(200) == 52){
+                    Launcher.PM("A letter falls out and you can't help but read it... the spiral order knows a way into the core and doesn't say!",Long.parseLong(UD.ID));
+                    UD.artifacts.getData().add("Truthful Letter");
+                }
+            }
+        });
+        
+
+        
+        register(new Mission(
                 "Carrying Boxes",
-                48 * 60 * 1000,
+                145 * 60 * 1000,
                 20,
                 1,
                 NORMAL,
@@ -238,7 +370,7 @@ public class Mission {
         
         register(new Mission(
                 "Taking Out Trash-- Moorcraft",
-                48 * 60 * 1000,
+                150 * 60 * 1000,
                 25,
                 3,
                 SHADOW,
@@ -249,7 +381,7 @@ public class Mission {
         
         register(new Mission(
                 "Cleaning the ooze-- Moorcraft",
-                24 * 60 * 1000,
+                72 * 60 * 1000,
                 15,
                 3,
                 ELEMENTAL,
@@ -303,7 +435,7 @@ public class Mission {
         
         register(new Mission(
                 "Geotech Intern",
-                60 * 60 * 1000,
+                120 * 60 * 1000,
                 0,
                 1,
                 NONE,
@@ -332,7 +464,7 @@ public class Mission {
         
         register(new Mission(
                 "Geotech",
-                90 * 60 * 1000,
+                180 * 60 * 1000,
                 50,
                 3,
                 NONE,
@@ -364,7 +496,7 @@ public class Mission {
         
         register(new Mission(
                 "Den Defaunation",
-                30 * 60 * 1000,
+                60 * 60 * 1000,
                 35,
                 1,
                 PIERCING,
@@ -415,7 +547,7 @@ public class Mission {
         
         register(new Mission(
                 "Fiendish Friends",
-                30 * 60 * 1000,
+                60 * 60 * 1000,
                 35,
                 1,
                 PIERCING,
@@ -466,7 +598,7 @@ public class Mission {
         
         register(new Mission(
                 "Garish Gremlins",
-                30 * 60 * 1000,
+                60 * 60 * 1000,
                 35,
                 1,
                 SHADOW,
@@ -507,7 +639,7 @@ public class Mission {
         
         register(new Mission(
                 "Guarded Gravestones",
-                30 * 60 * 1000,
+                60 * 60 * 1000,
                 35,
                 1,
                 ELEMENTAL,
@@ -558,7 +690,7 @@ public class Mission {
         
         register(new Mission(
                 "Autonomous Automations",
-                30 * 60 * 1000,
+                60 * 60 * 1000,
                 35,
                 1,
                 ELEMENTAL,
@@ -609,7 +741,7 @@ public class Mission {
         
         register(new Mission(
                 "Slimy Showdown",
-                30 * 60 * 1000,
+                60 * 60 * 1000,
                 35,
                 1,
                 SHADOW,
@@ -660,7 +792,7 @@ public class Mission {
         
         register(new Mission(
                 "Fiery Flamewar",
-                30 * 60 * 1000,
+                60 * 60 * 1000,
                 35,
                 2,
                 SHADOW,
@@ -700,7 +832,7 @@ public class Mission {
         
         register(new Mission(
                 "Generic Shock Mission",
-                30 * 60 * 1000,
+                60 * 60 * 1000,
                 35,
                 2,
                 SHADOW,
@@ -740,7 +872,7 @@ public class Mission {
         
         register(new Mission(
                 "Poisonous Peril",
-                30 * 60 * 1000,
+                60 * 60 * 1000,
                 35,
                 2,
                 PIERCING,
@@ -780,7 +912,7 @@ public class Mission {
         
         register(new Mission(
                 "Frozen to the bone",
-                30 * 60 * 1000,
+                60 * 60 * 1000,
                 35,
                 2,
                 ELEMENTAL,

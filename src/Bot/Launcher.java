@@ -31,6 +31,7 @@ import com.vdurmont.emoji.EmojiManager;
 import java.awt.Color;
 import static java.lang.Thread.yield;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
@@ -300,5 +301,108 @@ public class Launcher implements IListener<MessageReceivedEvent>{
            IUser user = client.fetchUser(ID);
            IChannel get = client.getOrCreatePMChannel(user);
            send(message, get);
+       }
+       
+       public static void organizeRoles(){
+           cleanRoles();
+           try{
+           ArrayList<IRole> roles = new ArrayList<>();
+           
+           
+           
+           for(IRole R : client.getRoles()){
+               if(roles.size()==0){
+                   System.out.println("ADDING: "+R.getName());
+                   roles.add(R);
+                   
+               } else {
+                   boolean placed = false;
+                   for(int i = 0; i < roles.size(); ++i){
+                       IRole R2 = roles.get(i);
+                       
+                       
+                       float [] a = Color.RGBtoHSB(R.getColor().getRed(),R.getColor().getGreen(),R.getColor().getBlue(),null);
+                       float [] b = Color.RGBtoHSB(R2.getColor().getRed(),R2.getColor().getGreen(),R2.getColor().getBlue(),null);
+                       
+                       float alpha = a[0]*100+a[1]*10+a[2];
+                       float beta = b[0]*100+b[1]*10+b[2];
+                       
+                       if(alpha > beta){
+                           roles.add(i,R);
+                           placed = true;
+                           i=roles.size()+1;
+                       }
+                   }
+                   if(placed==false){
+                       System.out.println("ADDING: "+R.getName());
+                       roles.add(R);
+                   }
+               }
+           }
+
+           System.out.println("They see me role-ing...");
+           
+           IRole [] rol = new IRole [roles.size()];
+           for(int i = 0; i < roles.size(); ++i){
+               rol[i] = roles.get(i);
+           }
+           client.getGuilds().get(0).reorderRoles(rol);
+           
+           System.out.println("DONE :D");
+
+           organizeUsers(roles);
+           
+           } catch (Exception E){
+               E.printStackTrace();
+           }
+       }
+       
+       public static void cleanRoles(){
+           ArrayList<IRole> roles = new ArrayList<>();
+           for(IRole R : client.getRoles()){
+               roles.add(R);
+           }
+           
+           for(IUser U : client.getUsers()){
+               for(IRole R : U.getRolesForGuild(client.getGuilds().get(0))){
+                   try{
+                       roles.remove(R);
+                   } catch (Exception E){}
+               }
+           }
+           
+           for(IRole R : roles){
+               R.delete();
+           }
+       }
+       
+       public static void organizeUsers(ArrayList<IRole> roles){
+           Thread T = new Thread(){
+               public void run(){
+                           int i = 945;
+                   for(IRole R : roles){
+                       try{
+                           Thread.sleep(1337);
+                       } catch (Exception E){}
+                       try{
+                       IUser use = client.getUserByID(Long.parseLong(R.getName()));
+                       System.out.println(use.getName());
+                       if(client.getGuilds().get(0).getOwner().getLongID() != use.getLongID()){
+                           String nam = use.getName();
+                           while(nam.length() > 26){
+                               int splt = oRan.nextInt(nam.length()-3);
+                               nam = nam.substring(0, splt) + nam.substring(splt+1, nam.length());
+                           }
+                           client.getGuilds().get(0).setUserNickname(use,"["+((char)i)+"]"+nam);
+                           i++;
+                       }
+                       } catch (Exception E){
+                           System.err.print(E);
+                       }
+                   }
+               }
+           };
+           T.start();
+           
        }
 }

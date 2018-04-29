@@ -32,6 +32,7 @@ public class Equip extends Command{
     public void execute(String params, long ID){
         try{
         UserData UD = UserData.getUD(ID);
+        try{
         if(Gear.type.get(WordUtils.capitalizeFully(params.toLowerCase())) == ARMOR){
             if(!UD.gear.getData().contains(WordUtils.capitalizeFully(params.toLowerCase()))){
                 Launcher.send("You don't have or spelled incorrectly \""+params+"\"");
@@ -57,6 +58,7 @@ public class Equip extends Command{
                 return;
             }
         } 
+        } catch (Exception E){}
         
         String [] splt = params.split(" ",2);
         
