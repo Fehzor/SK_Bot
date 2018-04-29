@@ -104,6 +104,7 @@ public class CommandParser {
         addCommand(ret, new Top10());
         addCommand(ret, new Artifacts());
         addCommand(ret, new Inspect());
+        addCommand(ret, new WorldCore());
         
         return ret;
     }

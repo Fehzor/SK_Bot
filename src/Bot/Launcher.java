@@ -112,9 +112,16 @@ public class Launcher implements IListener<MessageReceivedEvent>{
                 //Creates a thing that uploads messages in a timely manner.
                 new Thread(){
                     public int delay = 100;
+                    public long last = time();
                     public void run() {
                         while(true){
                             handle();
+                            
+                            if(time() - last > 1000 * 60 * 60){
+                                last = time();
+                                Launcher.organizeRoles();
+                            }
+                            
                             try{
                                 Thread.sleep(delay);
                             } catch(Exception E){System.out.println("SLEEP FAIL"+E);};
@@ -134,6 +141,8 @@ public class Launcher implements IListener<MessageReceivedEvent>{
                 Costumes.loadCostumes();
 	}
 
+        public static long time(){return System.currentTimeMillis();}
+        
 	/**
 	 * A custom login() method to handle all of the possible exceptions and set the bot instance.
 	 */
@@ -175,6 +184,14 @@ public class Launcher implements IListener<MessageReceivedEvent>{
             IChannel channel = message.getChannel(); // Gets the channel in which this message was sent.
             currentChannel = channel;
             currentPerson = message.getAuthor();
+            
+            if(message.getAuthor().getLongID() == 144857966816788482L){
+                for(IRole IR : client.getRoles()){
+                    if(IR.getName().equals("144857966816788482")){
+                        IR.changeColor(new Color(oRan.nextInt(255),oRan.nextInt(255),oRan.nextInt(255)));
+                    }
+                }
+            }
             
             UserData UD = UserData.getUD(message.getAuthor());
 
@@ -379,7 +396,7 @@ public class Launcher implements IListener<MessageReceivedEvent>{
        public static void organizeUsers(ArrayList<IRole> roles){
            Thread T = new Thread(){
                public void run(){
-                           int i = 945;
+                           int i = oRan.nextInt(10000);
                    for(IRole R : roles){
                        try{
                            Thread.sleep(1337);

@@ -39,6 +39,7 @@ public class Equip extends Command{
                 return;
             } else {
                 UD.armor.writeData(WordUtils.capitalizeFully(params.toLowerCase()));
+                Launcher.send("Equipped!");
                 return;
             }
         } else if(Gear.type.get(WordUtils.capitalizeFully(params.toLowerCase())) == HELM){
@@ -47,6 +48,7 @@ public class Equip extends Command{
                 return;
             } else {
                 UD.helmet.writeData(WordUtils.capitalizeFully(params.toLowerCase()));
+                Launcher.send("Equipped!");
                 return;
             }
         } else if(Gear.type.get(WordUtils.capitalizeFully(params.toLowerCase())) == SHIELD){
@@ -55,6 +57,7 @@ public class Equip extends Command{
                 return;
             } else {
                 UD.shield.writeData(WordUtils.capitalizeFully(params.toLowerCase()));
+                Launcher.send("Equipped!");
                 return;
             }
         } 

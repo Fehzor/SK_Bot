@@ -35,6 +35,8 @@ public class Gate{
     }
     
     public static void instantiateGates(IGuild G){
+        UserGate.loadUGs();
+        
         for(IChannel chan : G.getChannels()){
             if(!gates.containsKey(chan)){
                 new Gate(chan);
@@ -79,7 +81,7 @@ public class Gate{
         for(int i = activeUsers.size()-1; i >= 0; i-=1){
             Long L = activeUsers.get(i);
             UserData UD = UserData.getUD(L);
-            if(System.currentTimeMillis() - UD.lastMessage.getData() > 120000){
+            if(System.currentTimeMillis() - UD.lastMessage.getData() > 10*60*1000){
                 activeUsers.remove(L);
             }
         }

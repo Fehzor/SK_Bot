@@ -10,6 +10,7 @@ import Bot.Commands.CommandParser;
 import Bot.Fields.UserData;
 import Bot.Launcher;
 import static Bot.SuperRandom.oRan;
+import Game.UserGate;
 import sx.blah.discord.handle.obj.IChannel;
 
 /**
@@ -34,6 +35,16 @@ public class Gate extends Command{
                 + G.minerals.getData()[2]+" Blue, "
                 + G.minerals.getData()[3]+" Yellow, "
                 + G.minerals.getData()[4]+" Purple\n";
+        
+        try{
+            UserGate UG = (UserGate)G;
+            
+            S += "\n**MINERAL FEEDER:**\n"+UG.toGive.getData()[0]+" Red, "
+                + UG.toGive.getData()[1]+" Green, "
+                + UG.toGive.getData()[2]+" Blue, "
+                + UG.toGive.getData()[3]+" Yellow, "
+                + UG.toGive.getData()[4]+" Purple\n";
+        }catch (Exception E){}
         
         Launcher.send(S);
         }catch (Exception E){

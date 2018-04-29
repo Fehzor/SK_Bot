@@ -46,7 +46,7 @@ public class Recolor extends Command{
                 if(R.getName().equals(""+ID)){
                     R.changeColor(gnu);
                     //Launcher.PM("Color has been set!", ID);
-                    Launcher.organizeRoles();
+                    //Launcher.organizeRoles();
                     return;
                 }
             }
@@ -114,7 +114,7 @@ public class Recolor extends Command{
             if(R.getName().equals(""+ID)){
                 R.changeColor(gnu);
                 
-                Launcher.organizeRoles();
+                //Launcher.organizeRoles();
                 
                 return;
             }

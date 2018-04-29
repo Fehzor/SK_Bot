@@ -48,8 +48,8 @@ public class Craft extends Command{
         if(star == 4)matCost = 250;
         if(star == 5)matCost = 800;
         
-        if(mats[matA] > matCost && mats[matB] > matCost && 
-                                        UD.energy.getData() > craftingCost){
+        if(mats[matA] >= matCost && mats[matB] >= matCost && 
+                                        UD.energy.getData() >= craftingCost){
             if(Gear.prev.containsKey(gear)){
                 if(UD.gear.getData().contains(Gear.prev.get(gear))){
                     UD.gear.getData().remove(gear);
