@@ -35,7 +35,7 @@ public class UserGate extends Gate{
         
         toGive = new Field<>("TEMPGATE",""+chan.getLongID(), minerals);
         
-        this.minerals.writeData(new int[]{1000,1000,1000,1000,1000});
+        this.minerals.writeData(new int[]{(int)(.7*minerals[0]),(int)(.7*minerals[0]),(int)(.7*minerals[0]),(int)(.7*minerals[0]),(int)(.7*minerals[0])});
         
         Ugates.getData().add(chan.getLongID());
         Ugates.write();
@@ -55,9 +55,9 @@ public class UserGate extends Gate{
         int[] mins = minerals.getData();
         
         for(int i = 0; i < 5; ++i){
-            if(giv[i] >= 3){
-                mins[i]+=3;
-                giv[i]-=3;
+            if(giv[i] >= 7){
+                mins[i]+=7;
+                giv[i]-=7;
             } else if(giv[i] >= 1){
                 mins[i]+=1;
                 giv[i]-=1;
@@ -69,7 +69,7 @@ public class UserGate extends Gate{
         
         boolean delete = true;
         for(int i = 0; i < 5; ++i){
-            if(mins[i] > 0)delete = false;
+            if(mins[i] > 10)delete = false;
         }
         if(delete){
             Ugates.getData().remove(chan.getLongID());
@@ -101,7 +101,7 @@ public class UserGate extends Gate{
         String [] s2 = new String [] {
             "Bishop",
             "Clover",
-            "Falcom",
+            "Falcon",
             "King",
             "Knight",
             "Lion",

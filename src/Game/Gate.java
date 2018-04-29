@@ -45,10 +45,29 @@ public class Gate{
     }
     
     public int getMaterialAndDeduct(){
-        int indexA = 1;
-        int indexB = 0;
-        int max = 0;
-        int otherMax = 0;
+
+        
+        int total = 0;
+        
+        for(int i = 0; i < 5; ++i){
+            total+=minerals.getData()[i];
+        }
+        
+        int indexA = oRan.nextInt(5);
+        int indexB = oRan.nextInt(5);
+        int tries = 0;
+                
+        while(tries<10000 && minerals.getData()[indexA] <= oRan.nextInt(total)){
+            indexA = oRan.nextInt(5);
+            tries++;
+        }
+        
+        while(tries<10000&&(minerals.getData()[indexB] <= oRan.nextInt(total) || indexA==indexB)){
+            indexB = oRan.nextInt(5);
+            tries++;
+        }
+        
+        /*
         for(int i=0; i <minerals.getData().length;++i){
             if(minerals.getData()[i] >= max){
                 otherMax = max;
@@ -60,6 +79,7 @@ public class Gate{
                 indexB = i;
             }
         }
+        */
         
         if(minerals.getData()[indexA] <= 0 || minerals.getData()[indexB] <= 0){
             return -1;
@@ -72,9 +92,16 @@ public class Gate{
     }
     
     public void deductMinerals(int a, int b){
-        minerals.getData()[a] = (int)Math.floor(minerals.getData()[a] * .97);
-        minerals.getData()[b] = (int)Math.floor(minerals.getData()[b] * .97);
+        minerals.getData()[a] = minerals.getData()[a]-3;
+        minerals.getData()[b] = minerals.getData()[b]-3;
+        
+        if(minerals.getData()[a] < 0)minerals.getData()[a]= 0;
+        else minerals.getData()[a] = (int)Math.floor(minerals.getData()[a] * .97);
+        if(minerals.getData()[b] < 0)minerals.getData()[b]= 0;
+        else minerals.getData()[b] = (int)Math.floor(minerals.getData()[b] * .97);
+
         minerals.write();
+        
     }
     
     public void pruneActiveUsers(){
