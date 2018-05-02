@@ -52,8 +52,26 @@ public class Craft extends Command{
                                         UD.energy.getData() >= craftingCost){
             if(Gear.prev.containsKey(gear)){
                 if(UD.gear.getData().contains(Gear.prev.get(gear))){
-                    UD.gear.getData().remove(gear);
+                    UD.gear.getData().remove(Gear.prev.get(gear));
                     UD.gear.write();
+                    if(UD.A.getData().equals(Gear.prev.get(gear))){
+                        UD.A.writeData("Proto Sword");
+                    }
+                    if(UD.B.getData().equals(Gear.prev.get(gear))){
+                        UD.B.writeData("Proto Gun");
+                    }
+                    if(UD.C.getData().equals(Gear.prev.get(gear))){
+                        UD.C.writeData("Proto Bomb");
+                    }
+                    if(UD.shield.getData().equals(Gear.prev.get(gear))){
+                        UD.shield.writeData("Proto Shield");
+                    }
+                    if(UD.armor.getData().equals(Gear.prev.get(gear))){
+                        UD.armor.writeData("Spiral Culet");
+                    }
+                    if(UD.helmet.getData().equals(Gear.prev.get(gear))){
+                        UD.helmet.writeData("Spiral Tailed Helm");
+                    }
                 } else {
                     Launcher.send("You need the prerequisite for that!");
                     return;

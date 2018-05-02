@@ -52,6 +52,12 @@ public class Gear {
         hidden("Spiral Culet",5,0,0,0,0,ARMOR);
         hidden("Spiral Tailed Helm",5,0,0,0,0,HELM);
         
+        hidden("Teddy Bear Buckler",13,0,0,0,0,SHIELD);
+        hidden("Tech Green Teddy Bear Buckler",13,0,0,0,0,SHIELD);
+        hidden("Tech Orange Teddy Bear Buckler",13,0,0,0,0,SHIELD);
+        hidden("Tech Blue Teddy Bear Buckler",13,0,0,0,0,SHIELD);
+        hidden("Tech Pink Teddy Bear Buckler",13,0,0,0,0,SHIELD);
+        
         int [] empty = new int[]{
             0,
             0,
@@ -424,6 +430,29 @@ public class Gear {
         };
         
         line(2,a,b,c,d,e,f,FIRE,CONSTRUCT,WEAPON);
+        
+        a = new String[]{
+            "Autogun",
+            "Dark Chaingun",
+            "Black Chaingun",
+            "Grim Repeater"
+        };
+        
+        b = new int[]{
+            12,12,12,12
+        };
+        
+        c = new int[]{
+            0,5,9,15
+        };
+        
+        d = empty;
+        
+        f = new int[]{
+            0,3,3,3
+        };
+        
+        line(2,a,b,c,d,e,f,CONSTRUCT,FIEND,WEAPON);
         
         a = new String[]{
             "Autogun",
@@ -876,6 +905,106 @@ public class Gear {
         };
         
         line(2,a,b,c,d,e,f,FIRE,BEAST,SHIELD);
+        
+        a = new String[]{
+            "Spiral Demo Suit",
+            "Fused Demo Suit",
+            "Heavy Demo Suit",
+            "Volcanic Demo Suit"
+        };
+        
+        b = new int[]{
+            3,3,3,3
+        };
+        
+        c = new int[]{
+            1,2,3,4
+        };
+        
+        d = empty;
+        
+        e = empty;
+        
+        f = new int[]{
+            0,0,0,0
+        };
+        
+        line(2,a,b,c,d,e,f,FIRE,GREMLIN,ARMOR);
+        
+        a = new String[]{
+            "Spiral Demo Helm",
+            "Fused Demo Helm",
+            "Heavy Demo Helm",
+            "Volcanic Demo Helm"
+        };
+        
+        b = new int[]{
+            3,3,3,3
+        };
+        
+        c = new int[]{
+            1,2,3,4
+        };
+        
+        d = empty;
+        
+        e = empty;
+        
+        f = new int[]{
+            0,0,0,0
+        };
+        
+        line(2,a,b,c,d,e,f,FIRE,GREMLIN,HELM);
+        
+        a = new String[]{
+            "Wolver Cap",
+            "Dusker Cap",
+            "Ash Tail Cap",
+            "Skolver Cap"
+        };
+        
+        b = new int[]{
+            10,10,10,10
+        };
+        
+        c = new int[]{
+            3000,12000,30000,45000
+        };
+        
+        d = empty;
+        
+        e = empty;
+        
+        f = new int[]{
+            0,0,0,0
+        };
+        
+        line(2,a,b,c,d,e,f,BEAST,SHOCK,HELM);
+        
+        a = new String[]{
+            "Wolver Coat",
+            "Dusker Coat",
+            "Ash Tail Coat",
+            "Skolver Coat"
+        };
+        
+        b = new int[]{
+            10,10,10,10
+        };
+        
+        c = new int[]{
+            3000,12000,30000,45000
+        };
+        
+        d = empty;
+        
+        e = empty;
+        
+        f = new int[]{
+            0,0,0,0
+        };
+        
+        line(2,a,b,c,d,e,f,BEAST,SHOCK,ARMOR);
         
     }
     

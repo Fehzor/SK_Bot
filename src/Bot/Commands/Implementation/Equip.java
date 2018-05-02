@@ -14,6 +14,7 @@ import Game.Gear;
 import static Game.Gear.ARMOR;
 import static Game.Gear.HELM;
 import static Game.Gear.SHIELD;
+import static Game.Gear.WEAPON;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -67,6 +68,11 @@ public class Equip extends Command{
         
         
         String wep = WordUtils.capitalizeFully(splt[1].toLowerCase());
+        
+        if(Gear.type.get(wep) != WEAPON){
+            Launcher.send("\""+wep+"\" isn't a weapon. Don't put A/B/C before it.");
+            return;
+        }
         
         if(!UD.gear.getData().contains(wep)){
             Launcher.send("You don't have or spelled incorrectly \""+wep+"\"");

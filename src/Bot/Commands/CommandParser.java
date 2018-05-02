@@ -105,6 +105,7 @@ public class CommandParser {
         addCommand(ret, new Artifacts());
         addCommand(ret, new Inspect());
         addCommand(ret, new WorldCore());
+        addCommand(ret, new ReMission());
         
         return ret;
     }

@@ -59,6 +59,21 @@ public class Deposit extends Command{
             if(splt[i+1].toLowerCase().equals("purple")){
                 index = 4;
             }
+            
+            if(splt[i+1].toLowerCase().equals("all")){
+                int move = Integer.parseInt(splt[i]);
+                for(int j = 0; j < 5; ++j){
+                    if(move <= UD.minerals.getData()[j]){
+                        UD.minerals.getData()[j] -= move;
+                        G.minerals.getData()[j] += move;
+                    }
+                }
+                UD.minerals.write();
+                G.minerals.write();
+                Launcher.send("Deposited "+move+" of all. Or tried to. ");
+                return;
+            }
+            
             if(splt[i].toLowerCase().equals("all")){
                 G.minerals.getData()[index] += UD.minerals.getData()[index];
                 UD.minerals.getData()[index] = 0;

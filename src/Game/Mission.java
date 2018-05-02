@@ -113,7 +113,7 @@ public class Mission {
             points += 1;
         }
         
-        if(A==B && A==C){
+        if(Gear.damageType.get(A)==Gear.damageType.get(B) && Gear.damageType.get(A)==Gear.damageType.get(C)){
             points -= 2;
         }
         
@@ -136,8 +136,8 @@ public class Mission {
         }
         
         
-        int times = (int)Math.sqrt(time / (5 * 60 * 1000));
-        int num = UD.missions.getData().size();
+        int times = 3+(int)Math.sqrt(time / (5 * 60 * 1000));
+        int num = 1+(int)Math.sqrt(UD.missions.getData().size());
         
         for(int i = 0; i < times; ++i){
             if(oRan.nextInt(num) == 0){
@@ -146,7 +146,7 @@ public class Mission {
         }
         
         if(once){
-            UD.missions.getData().remove(this);
+            UD.missions.getData().remove(this.name);
             UD.missions.write();
         }
     }
@@ -170,13 +170,7 @@ public class Mission {
                 "Stand in haven asking other knights for energy like the trash you are."
         ){
             public void bonus(UserData UD){
-                if(!(UD.costumes.getData().contains("GroundBreaker Set"))){
-                    UD.costumes.getData().add("GroundBreaker Set");
-                    UD.costumes.write();
-                    UD.CP.append(7);
-                    Launcher.PM("The Spiral Order noticed how early you were to the party and handed you a GroundBreaker Set!",Long.parseLong(UD.ID));
-                } else {
-                    if(oRan.nextInt(1000) == 23){
+                if(oRan.nextInt(1000) == 23){
                     UD.energy.append(10000);
                     Launcher.PM("...someone hands you 10,000 ce and walks away.",Long.parseLong(UD.ID));
                 } else if(oRan.nextInt(1000) < 100){
@@ -185,7 +179,7 @@ public class Mission {
                 } else {
                     Launcher.PM("...no one gave you anything :(",Long.parseLong(UD.ID));
                 }
-                }
+                
             }
         });
         
@@ -597,6 +591,77 @@ public class Mission {
         });
         
         register(new Mission(
+                "Gremlin Massacre",
+                90 * 60 * 1000,
+                50,
+                2,
+                SHADOW,
+                ELEMENTAL,
+                true,
+                "The Spiral Order has captured a good many fugitive gremlins, but cannot contain them. You've been instructed to \"fix\" their little issue..."
+        ){
+            public void bonus(UserData UD){
+                    UD.materials.getData()[GREMLIN]+=5;
+                    UD.materials.write();
+                    Launcher.PM("The unarmed gremlins plead for their lives...you shock them, and inject bits of lichen into them.. after they die you take their mats.. +5 Gremlin Mats!",Long.parseLong(UD.ID));
+                
+                
+                if(oRan.nextInt(1000) < 77){
+                    UD.artifacts.getData().add("Child's Skull");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- The skull of a gremlin child..", Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 7){
+                    UD.gear.getData().add("Teddy Bear Buckler");
+                    Launcher.PM("You pick up a fallen teddy bear....", Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 7){
+                    UD.gear.getData().add("Tech Orange Teddy Bear Buckler");
+                    Launcher.PM("You pick up a fallen teddy bear....", Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 7){
+                    UD.gear.getData().add("Tech Blue Teddy Bear Buckler");
+                    Launcher.PM("You pick up a fallen teddy bear....", Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 7){
+                    UD.gear.getData().add("Tech Green Teddy Bear Buckler");
+                    Launcher.PM("You pick up a fallen teddy bear....", Long.parseLong(UD.ID));
+                }
+                
+                if(oRan.nextInt(1000) < 7){
+                    UD.gear.getData().add("Tech Pink Teddy Bear Buckler");
+                    Launcher.PM("You pick up a fallen teddy bear....", Long.parseLong(UD.ID));
+                }
+            }
+            
+            public boolean eligible(UserData UD){
+                int ret = 0;
+                if(UD.artifacts.getData().contains("Red Stapler")){
+                    ret+=5;
+                }
+                
+                if(UD.artifacts.getData().contains("Gremlin Goggles")){
+                    ret+=10;
+                }
+                
+                if(UD.artifacts.getData().contains("Wolver Skull")){
+                    ret+=5;
+                }
+                
+                if(UD.artifacts.getData().contains("Generic Shock Artifact")){
+                    ret+=5;
+                }
+
+                
+                return ret >= 15;
+            }
+        });
+        
+        register(new Mission(
                 "Garish Gremlins",
                 60 * 60 * 1000,
                 35,
@@ -618,9 +683,19 @@ public class Mission {
                 } else {
                     Launcher.PM("These gremlins came prepared! You quickly pull out your weapons but it's too late- you barely survive to kill a third of your attackers before they vanish into the clockworks.",Long.parseLong(UD.ID));
                 }
+                
+                if(oRan.nextInt(1000) < 50){
+                    UD.artifacts.getData().add("Gremlin Goggles");
+                    UD.artifacts.write();
+                    Launcher.PM("You did however manage to hang onto a trophy of sorts- A pair of gremlin goggles.", Long.parseLong(UD.ID));
+                }
             }
             
             public boolean eligible(UserData UD){
+                if(UD.artifacts.getData().contains("Gremlin Goggles")){
+                    return false;
+                }
+                
                 if(Gear.damageType.get(UD.A.getData()) == Gear.SHADOW){
                     return true;
                 }
@@ -911,7 +986,7 @@ public class Mission {
         });
         
         register(new Mission(
-                "Frozen to the bone",
+                "Frozen To The Bone",
                 60 * 60 * 1000,
                 35,
                 2,

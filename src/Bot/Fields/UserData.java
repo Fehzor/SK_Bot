@@ -116,7 +116,8 @@ public class UserData {
             String s = "**"+name+"**\n\n";
             
             if(Mission.knights.getData().contains(Long.parseLong(ID))){
-                s+="**CURRENTLY IN MISSION: "+Mission.whichMission.getData().get(Long.parseLong(ID)).toUpperCase()+"**\n\n";
+                s+="**CURRENTLY IN MISSION: "+Mission.whichMission.getData().get(Long.parseLong(ID)).toUpperCase()+"**\n";
+                s+=Math.ceil((Mission.missions.get(Mission.whichMission.getData().get(Long.parseLong(ID))).time - (System.currentTimeMillis() - Mission.start.getData().get(Long.parseLong(ID)))) / (60*1000)) + " minutes remaining...\n\n";
             }
 
             //s+="Lols: "+lols.getData()+"\n";

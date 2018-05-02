@@ -36,12 +36,16 @@ public class Missions extends Command{
             if(UD.missions.getData().contains(m)){
                 s+="**"+m+": **"+Mission.missions.get(m).flavor+"\n";
                 
+                /*
                 String len = "Short";
                 if(Mission.missions.get(m).time >= 1000 * 60 * 30) len = "Medium";
                 if(Mission.missions.get(m).time >= 1000 * 60 * 60) len = "Long";
                 if(Mission.missions.get(m).time >= 1000 * 60 * 60 * 4) len = "Lengthy Work Shift";
                 if(Mission.missions.get(m).time >= 1000 * 60 * 60 * 8) len = "Very Lengthy Work Shift";
                 if(Mission.missions.get(m).time >= 1000 * 60 * 60 * 24) len = "One Day+";
+                */
+                
+                String len = Mission.missions.get(m).time / (1000*60)+" minutes";
                 
                 s+="Length: "+len+"\n";
                 s+="Reward: "+Mission.missions.get(m).e+" energy \n";

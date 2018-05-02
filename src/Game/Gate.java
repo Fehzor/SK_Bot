@@ -53,18 +53,26 @@ public class Gate{
             total+=minerals.getData()[i];
         }
         
+        if(total < 10){
+            return -1;
+        }
+        
         int indexA = oRan.nextInt(5);
         int indexB = oRan.nextInt(5);
         int tries = 0;
                 
-        while(tries<10000 && minerals.getData()[indexA] <= oRan.nextInt(total)){
+        while(tries<1000 && minerals.getData()[indexA] <= oRan.nextInt(total)){
             indexA = oRan.nextInt(5);
             tries++;
         }
         
-        while(tries<10000&&(minerals.getData()[indexB] <= oRan.nextInt(total) || indexA==indexB)){
+        while(tries<1000&&(minerals.getData()[indexB] <= oRan.nextInt(total) || indexA==indexB)){
             indexB = oRan.nextInt(5);
             tries++;
+        }
+        
+        if(indexA == indexB){
+            return -1;
         }
         
         /*

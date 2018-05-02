@@ -8,6 +8,7 @@ package Game;
 import Bot.Fields.UserData;
 import static Bot.SuperRandom.oRan;
 import Game.Gate;
+import Game.weps.Teddy;
 import sx.blah.discord.handle.obj.IChannel;
 
 /**
@@ -28,6 +29,8 @@ public class Effects {
     public static final int AUTOSTEAL_MATERIALS = 9;
     public static final int START_EARLIER = 10;
     public static final int START_EARLIER_MATS = 11;
+    public static final int DEPOSIT_HIGHEST = 12;
+    public static final int TEDDY = 13;
     
     public static void act(Gate G, UserData UD, int effect, int param1, int param2, int param3){
         if(effect == CROWNS_EFFECT){
@@ -128,6 +131,23 @@ public class Effects {
             }
         }
         
+        if(effect == DEPOSIT_HIGHEST){
+            int highest = 0;
+            for(int i = 0; i < 5; ++i){
+                if(UD.minerals.getData()[i] >= UD.minerals.getData()[highest]){
+                    highest = i;
+                }
+            }
+                
+            if(UD.minerals.getData()[highest] >= param1){
+                UD.minerals.getData()[highest] -= param1;
+                G.minerals.getData()[highest] += param1;
+                G.minerals.write();
+                UD.minerals.write();
+            }
+                
+        }
+        
         if(effect == START_EARLIER){
             Long ID = Long.parseLong(UD.ID);
             
@@ -159,6 +179,11 @@ public class Effects {
                 Mission.start.getData().put(ID, start);
                 Mission.start.write();
             }
+        }
+        
+        if(effect == TEDDY){
+            Teddy.increase(UD);
+            Teddy.check(UD);
         }
     }
     
@@ -203,6 +228,10 @@ public class Effects {
         if(effect == START_EARLIER_MATS){
             return "Takes "+(param1/1000)+" seconds off of your current mission. "
                     + "Also lose "+param3+" "+Constants.getMaterialName(param2)+" materials.";
+        }
+        
+        if(effect == DEPOSIT_HIGHEST){
+            return "Deposits "+param1+" of your highest mineral to the gate!";
         }
         
         return "Weapon Effect Unknown";

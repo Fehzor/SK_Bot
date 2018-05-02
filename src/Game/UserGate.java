@@ -9,6 +9,8 @@ import Bot.Fields.Field;
 import Bot.Launcher;
 import static Bot.SuperRandom.oRan;
 import java.util.ArrayList;
+import java.util.EnumSet;
+import sx.blah.discord.handle.obj.Permissions;
 
 /**
  *
@@ -35,7 +37,7 @@ public class UserGate extends Gate{
         
         toGive = new Field<>("TEMPGATE",""+chan.getLongID(), minerals);
         
-        this.minerals.writeData(new int[]{(int)(.7*minerals[0]),(int)(.7*minerals[0]),(int)(.7*minerals[0]),(int)(.7*minerals[0]),(int)(.7*minerals[0])});
+        this.minerals.writeData(new int[]{(int)(.7*minerals[0]),(int)(.7*minerals[1]),(int)(.7*minerals[2]),(int)(.7*minerals[3]),(int)(.7*minerals[4])});
         
         Ugates.getData().add(chan.getLongID());
         Ugates.write();
@@ -55,9 +57,15 @@ public class UserGate extends Gate{
         int[] mins = minerals.getData();
         
         for(int i = 0; i < 5; ++i){
-            if(giv[i] >= 7){
-                mins[i]+=7;
-                giv[i]-=7;
+            if(mins[i] <= 10 && giv[i] >= 100){
+                mins[i]+=100;
+                giv[i]-=100;
+            } else if(mins[i] <= 10){
+                mins[i]+=giv[i];
+                giv[i]-=0;
+            } else if(giv[i] >= 10){
+                mins[i]+=10;
+                giv[i]-=10;
             } else if(giv[i] >= 1){
                 mins[i]+=1;
                 giv[i]-=1;
@@ -72,9 +80,23 @@ public class UserGate extends Gate{
             if(mins[i] > 10)delete = false;
         }
         if(delete){
-            Ugates.getData().remove(chan.getLongID());
-            Ugates.write();
-            this.chan.delete();
+            
+            Launcher.send("NOT ENOUGH MINERALS_GATE DESTRUCTION IN 3 MINUTES");
+            
+            
+            Thread T = new Thread(){
+                public void run(){
+                    try{
+                        Thread.sleep(1000*60*3);
+                        
+                        Ugates.getData().remove(chan.getLongID());
+                        Ugates.write();
+                        chan.delete();
+                    }catch (Exception E){}
+                }
+            }; T.start();
+            
+            
         }
     }
     
@@ -95,7 +117,7 @@ public class UserGate extends Gate{
             "Silver",
             "Sunburnt",
             "Gay",
-            "Janky"
+            "Black"
         };
         
         String [] s2 = new String [] {
